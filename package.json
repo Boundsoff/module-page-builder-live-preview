@@ -1,0 +1,49 @@
+{
+  "name": "@boundsoff/module-page-builder-template-inline",
+  "description": "Magento 2 module for page builder to save and apply templates with each block",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/none-life/magento-page-builder-template-inline.git"
+  },
+  "author": "Kamil Wiśniowski <kwisniowski@boundsoff.com>",
+  "scripts": {
+    "ts:build": "babel view/adminhtml/web/ts/js/ --out-dir view/adminhtml/web/js/ --extensions '.ts,.tsx' --source-maps",
+    "ts:build:prod": "babel view/adminhtml/web/ts/js/ --out-dir view/adminhtml/web/js/ --extensions '.ts,.tsx'",
+    "ts:watch": "npm run ts:build -- --watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "~7.25.9",
+    "@babel/core": "~7.26.0",
+    "@babel/plugin-proposal-class-properties": "~7.18.6",
+    "@babel/plugin-syntax-object-rest-spread": "~7.8.3",
+    "@babel/plugin-transform-modules-amd": "~7.25.9",
+    "@babel/preset-env": "~7.26.0",
+    "@babel/preset-typescript": "~7.26.0",
+    "@babel/types": "~7.26.0",
+    "@comandeer/babel-plugin-banner": "~5.0.0",
+    "@types/csso": "~3.5.1",
+    "@types/html2canvas": "0.0.35",
+    "@types/jquery": "1.10.27",
+    "@types/jqueryui": "~1.12.13",
+    "@types/knockout": "~3.4.69",
+    "@types/magento2": "git+https://github.com/magento/ts-types.git",
+    "@types/object-path": "~0.11.0",
+    "@types/requirejs": "~2.1.32",
+    "@types/slick-carousel": "~1.6.34",
+    "@types/tinycolor": "~1.1.27",
+    "@types/tinymce": "~4.6.0",
+    "@types/underscore": "~1.10.24",
+    "concurrently": "~9.1.0",
+    "dts-generator": "~3.0.0",
+    "prettier": "~3.3.3",
+    "stylelint": "~16.10.0",
+    "stylelint-config-recommended": "~14.0.1",
+    "stylelint-order": "~6.0.4",
+    "tslint": "~6.1.3",
+    "typescript": "~5.6.3"
+  },
+  "engines": {
+    "node": ">=22.11.0",
+    "npm": ">=10.9.0"
+  }
+}
