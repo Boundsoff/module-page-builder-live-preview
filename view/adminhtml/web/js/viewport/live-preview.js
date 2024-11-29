@@ -4,14 +4,20 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-define(["Magento_PageBuilder/js/config"], function (_config) {
+define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knockout) {
   var LivePreview = /*#__PURE__*/function () {
     "use strict";
 
     function LivePreview() {
+      var _this = this;
       this.template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
+      this.storeActive = _knockout.observable(null);
+      this.copyStatus = _knockout.observable('Copy ©');
       this.icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
       document.addEventListener('click', this.onDocClick.bind(this));
+      this.storeShown = _knockout.computed(function () {
+        return !!_this.storeActive();
+      });
     }
     var _proto = LivePreview.prototype;
     _proto.getTemplate = function getTemplate() {
@@ -28,6 +34,19 @@ define(["Magento_PageBuilder/js/config"], function (_config) {
     };
     _proto.getConnectionCount = function getConnectionCount(code) {
       return Number(0).toString(); // @todo
+    };
+    _proto.setStoreActive = function setStoreActive(store) {
+      this.storeActive(store);
+    };
+    _proto.copyLink = function copyLink() {
+      var _this2 = this;
+      // noinspection JSIgnoredPromiseFromCall
+      this.copyStatus('Copied ✔');
+      navigator.clipboard.writeText(this.previewLink).then(function () {
+        setTimeout(function () {
+          _this2.copyStatus('Copy ©');
+        }, 5000);
+      });
     };
     _proto.onDocClick = function onDocClick(event) {
       var _this$dialogElement;
@@ -53,6 +72,12 @@ define(["Magento_PageBuilder/js/config"], function (_config) {
       key: "stores",
       get: function get() {
         return _config.getConfig('stores');
+      }
+    }, {
+      key: "previewLink",
+      get: function get() {
+        // this.storeActive()
+        return 'https://google.com/';
       }
     }]);
   }();

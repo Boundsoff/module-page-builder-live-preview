@@ -1,8 +1,14 @@
 import Config from "Magento_PageBuilder/js/config";
 import {Dictionary} from "underscore";
+import ko from 'knockout';
+
+type StoreInformation = { code: string, name: string };
 
 export default class LivePreview {
     public readonly template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
+    public readonly storeActive?: KnockoutObservable<StoreInformation | null> = ko.observable(null);
+    public readonly copyStatus: KnockoutObservable<string> = ko.observable('Copy ©');
+    public readonly storeShown: KnockoutObservable<boolean>;
     protected readonly icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
     protected dialogElement: HTMLDialogElement;
 
@@ -12,12 +18,18 @@ export default class LivePreview {
         return `${themeUrl}/${this.icomoonFeed}`;
     }
 
-    public get stores(): Dictionary<{ code: string, name: string }> {
+    public get stores(): Dictionary<StoreInformation> {
         return Config.getConfig('stores');
+    }
+
+    public get previewLink(): string {
+        // this.storeActive()
+        return 'https://google.com/';
     }
 
     constructor() {
         document.addEventListener('click', this.onDocClick.bind(this));
+        this.storeShown = ko.computed(() => !!this.storeActive());
     }
     public getTemplate(): string {
         return this.template;
@@ -37,6 +49,21 @@ export default class LivePreview {
 
     public getConnectionCount(code: string): string {
         return Number(0).toString(); // @todo
+    }
+
+    public setStoreActive(store?: StoreInformation): void {
+        this.storeActive(store);
+    }
+
+    public copyLink(): void {
+        // noinspection JSIgnoredPromiseFromCall
+        this.copyStatus('Copied ✔');
+        navigator.clipboard.writeText(this.previewLink)
+            .then(() => {
+                setTimeout(() => {
+                    this.copyStatus('Copy ©');
+                }, 5000);
+            })
     }
 
     protected onDocClick(event: MouseEvent): void {
