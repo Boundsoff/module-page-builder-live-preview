@@ -16,6 +16,7 @@
     <ol>
         <li each="data: Object.values(stores), as: '$store'">
             <text args="$store.name"></text>
+            (<text args="$parent.getConnectionCount($store.code)"></text>)
         </li>
     </ol>
 </dialog>

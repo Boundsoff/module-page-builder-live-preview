@@ -26,6 +26,9 @@ define(["Magento_PageBuilder/js/config"], function (_config) {
         this.dialogElement.show();
       }
     };
+    _proto.getConnectionCount = function getConnectionCount(code) {
+      return Number(0).toString(); // @todo
+    };
     _proto.onDocClick = function onDocClick(event) {
       var _this$dialogElement;
       if (!((_this$dialogElement = this.dialogElement) != null && _this$dialogElement.open)) {

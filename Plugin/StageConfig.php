@@ -31,11 +31,19 @@ class StageConfig
 
         $stores = $this->storeRepository->getList();
         $stores = array_filter($stores, fn (StoreInterface $store) => $store->getCode() !== 'admin');
-        $stores = array_map(fn (StoreInterface $store) => [$store->getCode(), ["name" => $store->getName()]], $stores);
+        $stores = array_map(fn (StoreInterface $store) => [$store->getCode(), $this->getStoreInformation($store)], $stores);
         $stores = array_column($stores, 1, 0);
 
         $result['theme_url'] = $staticUrl;
         $result['stores'] = $stores;
         return $result;
+    }
+
+    public function getStoreInformation(StoreInterface $store): array
+    {
+        return [
+            'code' => $store->getCode(),
+            'name' => $store->getName(),
+        ];
     }
 }
