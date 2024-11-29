@@ -11,16 +11,45 @@ define(["Magento_PageBuilder/js/config"], function (_config) {
     function LivePreview() {
       this.template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
       this.icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
+      document.addEventListener('click', this.onDocClick.bind(this));
     }
     var _proto = LivePreview.prototype;
     _proto.getTemplate = function getTemplate() {
       return this.template;
+    };
+    _proto.bindDialog = function bindDialog(modelElement) {
+      this.dialogElement = modelElement;
+    };
+    _proto.onPreviewClick = function onPreviewClick(_, event) {
+      if (!this.dialogElement.open) {
+        event.stopPropagation();
+        this.dialogElement.show();
+      }
+    };
+    _proto.onDocClick = function onDocClick(event) {
+      var _this$dialogElement;
+      if (!((_this$dialogElement = this.dialogElement) != null && _this$dialogElement.open)) {
+        return;
+      }
+      var element = event.target;
+      do {
+        if (element.isEqualNode(this.dialogElement)) {
+          return;
+        }
+        element = element.parentElement;
+      } while (element);
+      this.dialogElement.close();
     };
     return _createClass(LivePreview, [{
       key: "srcIcomoonFeed",
       get: function get() {
         var themeUrl = _config.getConfig('theme_url');
         return themeUrl + "/" + this.icomoonFeed;
+      }
+    }, {
+      key: "stores",
+      get: function get() {
+        return _config.getConfig('stores');
       }
     }]);
   }();

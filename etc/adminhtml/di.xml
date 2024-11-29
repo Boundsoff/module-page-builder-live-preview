@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\PageBuilder\Model\Stage\Config">
-        <plugin name="add_static_url"
+        <plugin name="bf_live_preview-stage_config"
                 type="Boundsoff\PageBuilderLivePreview\Plugin\StageConfig"/>
     </type>
 </config>

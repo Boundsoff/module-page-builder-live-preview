@@ -2,6 +2,7 @@
     <button
         type="button"
         class="page-builder-viewport"
+        click="onPreviewClick"
     >
         <img data-bind="attr: { src: srcIcomoonFeed }" draggable="false" aria-hidden="true"/>
     </button>
@@ -10,3 +11,11 @@
         <span translate="'View your content with browser'"></span><br/>
     </span>
 </span>
+<dialog afterRender="bindDialog">
+    <span translate="'Stores'"></span>
+    <ol>
+        <li each="data: Object.values(stores), as: '$store'">
+            <text args="$store.name"></text>
+        </li>
+    </ol>
+</dialog>
