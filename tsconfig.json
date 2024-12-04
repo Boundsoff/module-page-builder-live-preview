@@ -4,7 +4,7 @@
       "Magento_PageBuilder/*": [
         "../../../../vendor/magento/module-page-builder/view/adminhtml/web/ts/*"
       ],
-      "Boundsoff_PageBuilderTemplateInline/*": [
+      "Boundsoff_PageBuilderLivePreview/*": [
         "view/adminhtml/web/ts/*"
       ]
     },
