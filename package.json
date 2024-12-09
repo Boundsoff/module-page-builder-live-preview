@@ -7,9 +7,15 @@
   },
   "author": "Kamil Wiśniowski <kwisniowski@boundsoff.com>",
   "scripts": {
-    "ts:build": "babel view/adminhtml/web/ts/js/ --out-dir view/adminhtml/web/js/ --extensions '.ts,.tsx' --source-maps",
-    "ts:build:prod": "babel view/adminhtml/web/ts/js/ --out-dir view/adminhtml/web/js/ --extensions '.ts,.tsx'",
-    "ts:watch": "npm run ts:build -- --watch"
+    "ts:build:admin": "babel view/adminhtml/web/ts/js/ --out-dir view/adminhtml/web/js/ --extensions '.ts,.tsx'",
+    "ts:build:admin:source": "npm run ts:build:admin --  --source-maps",
+    "ts:build:admin:watch": "npm run ts:build:admin:source -- --watch",
+    "ts:build:base": "babel view/base/web/ts/js/ --out-dir view/base/web/js/ --extensions '.ts,.tsx'",
+    "ts:build:base:source": "npm run ts:build:base --  --source-maps",
+    "ts:build:base:watch": "npm run ts:build:base:source -- --watch",
+    "prestart": "npm i --no-save",
+    "start": "npm-run-all --parallel ts:build:admin:watch ts:build:base:watch",
+    "build": "npm-run-all --parallel ts:build:admin ts:build:base"
   },
   "devDependencies": {
     "@babel/cli": "~7.25.9",
@@ -28,6 +34,7 @@
     "@types/knockout": "~3.4.69",
     "@types/magento2": "git+https://github.com/magento/ts-types.git",
     "@types/object-path": "~0.11.0",
+    "@types/pako": "^2.0.3",
     "@types/requirejs": "~2.1.32",
     "@types/slick-carousel": "~1.6.34",
     "@types/tinycolor": "~1.1.27",
@@ -35,6 +42,7 @@
     "@types/underscore": "~1.10.24",
     "concurrently": "~9.1.0",
     "dts-generator": "~3.0.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "~3.3.3",
     "stylelint": "~16.10.0",
     "stylelint-config-recommended": "~14.0.1",
@@ -45,5 +53,8 @@
   "engines": {
     "node": ">=22.11.0",
     "npm": ">=10.9.0"
+  },
+  "dependencies": {
+    "pako": "^2.1.0"
   }
 }
