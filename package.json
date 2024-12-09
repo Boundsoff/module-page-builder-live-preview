@@ -15,7 +15,7 @@
     "ts:build:base:watch": "npm run ts:build:base:source -- --watch",
     "prestart": "npm i --no-save",
     "start": "npm-run-all --parallel ts:build:admin:watch ts:build:base:watch",
-    "build": "npm-run-all --parallel ts:build:admin ts:build:base"
+    "build": "npm-run-all --parallel ts:build:**"
   },
   "devDependencies": {
     "@babel/cli": "~7.25.9",
@@ -35,6 +35,7 @@
     "@types/magento2": "git+https://github.com/magento/ts-types.git",
     "@types/object-path": "~0.11.0",
     "@types/pako": "^2.0.3",
+    "@types/peerjs": "^0.0.30",
     "@types/requirejs": "~2.1.32",
     "@types/slick-carousel": "~1.6.34",
     "@types/tinycolor": "~1.1.27",
@@ -53,8 +54,5 @@
   "engines": {
     "node": ">=22.11.0",
     "npm": ">=10.9.0"
-  },
-  "dependencies": {
-    "pako": "^2.1.0"
   }
 }

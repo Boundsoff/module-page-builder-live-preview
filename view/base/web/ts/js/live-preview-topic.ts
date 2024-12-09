@@ -1,5 +1,5 @@
 enum LivePreviewTopic {
-    connect,
+    register,
     close,
     render,
 }

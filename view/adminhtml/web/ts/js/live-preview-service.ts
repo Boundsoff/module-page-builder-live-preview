@@ -2,30 +2,29 @@
 import events from "Magento_PageBuilder/js/events";
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {
-    CloseSocketData,
-    ConnectSocketData,
+    RegisterSocketData,
     SocketClient,
     SocketMessage
 } from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
-import LivePreviewEncoder from "Boundsoff_PageBuilderLivePreview/js/live-preview-encoder";
+import {DataConnection, Peer} from "Boundsoff_PageBuilderLivePreview/js/peerjs-types";
 
 export default class {
-    protected readonly socket: WebSocket;
-    protected readonly clients: Map<string, SocketClient> = new Map();
+    protected readonly peer: Peer;
+    protected readonly clients: Map<DataConnection, SocketClient> = new Map();
 
     constructor(
         protected readonly pageBuilder: PageBuilderInterface,
     ) {
         window.addEventListener('beforeunload', () => {
-            this.socket.close();
+            Array.from(this.clients.keys())
+                .forEach((connection => connection.close()));
+
+            this.clients.clear();
+            this.peer.disconnect();
         }, { passive: true });
 
-        const url = new URL(location.origin);
-        url.pathname = `/page-builder/preview/${this.pageBuilder.id}/`;
-        url.protocol = 'wss';
-
-        this.socket = new WebSocket(url.toString());
-        this.socket.addEventListener('message', this.onSocketMessage.bind(this));
+        this.peer = new Peer();
+        this.peer.on('connection', this.connect.bind(this));
 
         events.on(
             `stage:${ this.pageBuilder.stage.id }:masterFormatRenderAfter`,
@@ -33,47 +32,49 @@ export default class {
         );
     }
 
+    public connect(connection: DataConnection): void {
+        if (this.clients.has(connection.connectionId)) {
+            console.warn('already got this socket client');
+        }
+
+        connection.on('open', () => {
+            connection.on('data', this.data.bind(this, connection));
+        })
+
+        this.clients.set(connection, { storeViewCode: '-' });
+    }
+
+    public data(connection: DataConnection, data: SocketMessage): void {
+        switch (data.topic) {
+            case LivePreviewTopic.register:
+                this.onRegister(connection, <RegisterSocketData>data.data);
+                break;
+            case LivePreviewTopic.close:
+                this.onClose(connection);
+                break;
+            default:
+                console.warn(`Undefined socket message type.`);
+                break;
+        }
+    }
+
     protected afterMasterFormatRender({ value }: { value: string}): void {
-        if (!this.clients.size) {
+        if (!this.clients.size || !this.peer.open) {
             return;
         }
 
         const socketMessage: SocketMessage = { topic: LivePreviewTopic.render, data: { value } }
-        const data = LivePreviewEncoder.encode(socketMessage);
-        this.socket.send(data);
+        Array.from(this.clients.keys())
+            .forEach(connection => connection.send(socketMessage));
     }
 
-    protected onSocketMessage(event: MessageEvent): void {
-        LivePreviewEncoder.decode(event.data)
-            .then((data: SocketMessage) => {
-                switch (data.topic) {
-                    case LivePreviewTopic.connect:
-                        this.onConnect(<ConnectSocketData>data.data);
-                        break;
-                    case LivePreviewTopic.close:
-                        this.onClose(<CloseSocketData>data.data);
-                        break;
-                    default:
-                        console.warn(`Undefined socket message type.`);
-                        break;
-                }
-            })
+    protected onRegister(connection: DataConnection, data: RegisterSocketData): void {
+        const client = this.clients.get(connection);
+        client.storeViewCode = data.storeViewCode;
     }
 
-    protected onConnect(data: ConnectSocketData): void {
-        if (this.clients.has(data.id)) {
-            console.warn('already got this socket client');
-        }
-
-
-        this.clients.set(data.id, data);
-    }
-
-    protected onClose(data: CloseSocketData): void {
-        if (!this.clients.has(data.id)) {
-            console.warn(`client wasn't even register`);
-        }
-
-        this.clients.delete(data.id);
+    protected onClose(connection: DataConnection): void {
+        this.clients.delete(connection);
+        connection.close();
     }
 }
