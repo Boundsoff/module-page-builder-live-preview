@@ -1,11 +1,12 @@
+// @ts-ignore
+import events from "Magento_PageBuilder/js/events";
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {
     CloseSocketData,
     ConnectSocketData,
     SocketClient,
     SocketMessage
-} from "./live-preview-service.types";
-import events from "Magento_PageBuilder/js/events";
+} from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
 import LivePreviewEncoder from "Boundsoff_PageBuilderLivePreview/js/live-preview-encoder";
 
 export default class {
@@ -37,7 +38,7 @@ export default class {
             return;
         }
 
-        const socketMessage: SocketMessage = { type: LivePreviewTopic.render, data: { value } }
+        const socketMessage: SocketMessage = { topic: LivePreviewTopic.render, data: { value } }
         const data = LivePreviewEncoder.encode(socketMessage);
         this.socket.send(data);
     }
@@ -64,7 +65,8 @@ export default class {
             console.warn('already got this socket client');
         }
 
-        this.clients.set(data.id, new SocketClient(data.id, data.storeViewCode));
+
+        this.clients.set(data.id, data);
     }
 
     protected onClose(data: CloseSocketData): void {

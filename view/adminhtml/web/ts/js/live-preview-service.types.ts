@@ -1,8 +1,6 @@
-export class SocketClient {
-    constructor(
-        public readonly id: string,
-        public readonly storeViewCode: string,
-    ) {}
+export interface SocketClient {
+    readonly id: string;
+    readonly storeViewCode: string;
 }
 
 export interface SocketMessage {

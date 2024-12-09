@@ -1,6 +1,7 @@
 /*eslint-disable */
 /* jscs:disable */
-define(["Boundsoff_PageBuilderLivePreview/js/live-preview-service.types", "Magento_PageBuilder/js/events", "Boundsoff_PageBuilderLivePreview/js/live-preview-encoder"], function (_livePreviewService, _events, _livePreviewEncoder) {
+define(["Magento_PageBuilder/js/events", "Boundsoff_PageBuilderLivePreview/js/live-preview-encoder"], function (_events, _livePreviewEncoder) {
+  // @ts-ignore
   var _default = /*#__PURE__*/function () {
     "use strict";
 
@@ -27,7 +28,7 @@ define(["Boundsoff_PageBuilderLivePreview/js/live-preview-service.types", "Magen
         return;
       }
       var socketMessage = {
-        type: LivePreviewTopic.render,
+        topic: LivePreviewTopic.render,
         data: {
           value: value
         }
@@ -55,7 +56,7 @@ define(["Boundsoff_PageBuilderLivePreview/js/live-preview-service.types", "Magen
       if (this.clients.has(data.id)) {
         console.warn('already got this socket client');
       }
-      this.clients.set(data.id, new _livePreviewService.SocketClient(data.id, data.storeViewCode));
+      this.clients.set(data.id, data);
     };
     _proto.onClose = function onClose(data) {
       if (!this.clients.has(data.id)) {
