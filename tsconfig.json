@@ -5,7 +5,9 @@
         "../../../../vendor/magento/module-page-builder/view/adminhtml/web/ts/*"
       ],
       "Boundsoff_PageBuilderLivePreview/*": [
-        "view/adminhtml/web/ts/*"
+        "view/adminhtml/web/ts/*",
+        "view/base/web/ts/*",
+        "view/frontend/web/ts/*",
       ]
     },
     "baseUrl": ".",
