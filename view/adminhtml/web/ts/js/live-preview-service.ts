@@ -6,11 +6,14 @@ import {
     SocketClient,
     SocketMessage
 } from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
-import {DataConnection, Peer} from "Boundsoff_PageBuilderLivePreview/js/peerjs-types";
 
 export default class {
     protected readonly peer: Peer;
     protected readonly clients: Map<DataConnection, SocketClient> = new Map();
+
+    get peerId(): string {
+        return this.peer.id;
+    }
 
     constructor(
         protected readonly pageBuilder: PageBuilderInterface,
@@ -33,7 +36,7 @@ export default class {
     }
 
     public connect(connection: DataConnection): void {
-        if (this.clients.has(connection.connectionId)) {
+        if (this.clients.has(connection)) {
             console.warn('already got this socket client');
         }
 

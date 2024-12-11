@@ -14,7 +14,7 @@ define(["Boundsoff_PageBuilderLivePreview/js/viewport/live-preview", "Boundsoff_
       function PageBuilderMixin(config, initialValue) {
         var _this;
         _this = _base.call(this, config, initialValue) || this;
-        _this.livePreview = new _livePreview();
+        _this.livePreview = new _livePreview(_this);
         if (_this.isStageReady()) {
           _this.startLivePreviewService();
         } else {
@@ -33,6 +33,11 @@ define(["Boundsoff_PageBuilderLivePreview/js/viewport/live-preview", "Boundsoff_
         key: "viewportTemplate",
         get: function get() {
           return "Boundsoff_PageBuilderLivePreview/viewport/switcher";
+        }
+      }, {
+        key: "livePreviewPeerId",
+        get: function get() {
+          return this.livePreviewService.peerId;
         }
       }]);
     }(base);

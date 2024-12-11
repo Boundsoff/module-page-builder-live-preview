@@ -7,6 +7,7 @@ use Magento\PageBuilder\Model\Stage\Config;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\StoreManagementInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Store\Model\Store;
 
 class StageConfig
 {
@@ -39,9 +40,18 @@ class StageConfig
         return $result;
     }
 
+    /**
+     * @param StoreInterface|Store $store
+     * @return array
+     */
     public function getStoreInformation(StoreInterface $store): array
     {
+        $baseUrl = $store->getBaseUrl();
+        $baseUrl = trim($baseUrl, '/');
+        $baseUrl .= "/live-preview/index/index/peer-id/:peer-id:";
+
         return [
+            'baseUrl' => $baseUrl,
             'code' => $store->getCode(),
             'name' => $store->getName(),
         ];

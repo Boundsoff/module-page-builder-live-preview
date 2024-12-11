@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+      layout="1column">
+    <body>
+        <referenceContainer name="main" htmlTag="main">
+            <block name="live-preview.renderer"
+                   template="Boundsoff_PageBuilderLivePreview::live-preview/renderer.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Boundsoff\PageBuilderLivePreview\ViewModel\LivePreviewDefault
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

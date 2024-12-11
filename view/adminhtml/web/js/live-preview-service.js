@@ -1,6 +1,10 @@
 /*eslint-disable */
 /* jscs:disable */
-define(["Magento_PageBuilder/js/events", "Boundsoff_PageBuilderLivePreview/js/peerjs-types"], function (_events, _peerjsTypes) {
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+define(["Magento_PageBuilder/js/events"], function (_events) {
   // @ts-ignore
   var _default = /*#__PURE__*/function () {
     "use strict";
@@ -18,14 +22,14 @@ define(["Magento_PageBuilder/js/events", "Boundsoff_PageBuilderLivePreview/js/pe
       }, {
         passive: true
       });
-      this.peer = new _peerjsTypes.Peer();
+      this.peer = new Peer();
       this.peer.on('connection', this.connect.bind(this));
       _events.on("stage:" + this.pageBuilder.stage.id + ":masterFormatRenderAfter", this.afterMasterFormatRender.bind(this));
     }
     var _proto = _default.prototype;
     _proto.connect = function connect(connection) {
       var _this2 = this;
-      if (this.clients.has(connection.connectionId)) {
+      if (this.clients.has(connection)) {
         console.warn('already got this socket client');
       }
       connection.on('open', function () {
@@ -71,7 +75,12 @@ define(["Magento_PageBuilder/js/events", "Boundsoff_PageBuilderLivePreview/js/pe
       this.clients.delete(connection);
       connection.close();
     };
-    return _default;
+    return _createClass(_default, [{
+      key: "peerId",
+      get: function get() {
+        return this.peer.id;
+      }
+    }]);
   }();
   return _default;
 });
