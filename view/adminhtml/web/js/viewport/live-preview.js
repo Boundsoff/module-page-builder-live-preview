@@ -8,12 +8,13 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
   var LivePreview = /*#__PURE__*/function () {
     "use strict";
 
-    function LivePreview() {
+    function LivePreview(pageBuilder) {
       var _this = this;
       this.template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
       this.storeActive = _knockout.observable(null);
       this.copyStatus = _knockout.observable('Copy ©');
       this.icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
+      this.pageBuilder = pageBuilder;
       document.addEventListener('click', this.onDocClick.bind(this));
       this.storeShown = _knockout.computed(function () {
         return !!_this.storeActive();
@@ -31,9 +32,6 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
         event.stopPropagation();
         this.dialogElement.show();
       }
-    };
-    _proto.getConnectionCount = function getConnectionCount(code) {
-      return Number(0).toString(); // @todo
     };
     _proto.setStoreActive = function setStoreActive(store) {
       this.storeActive(store);
@@ -76,11 +74,15 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
     }, {
       key: "previewLink",
       get: function get() {
-        // this.storeActive()
-        return 'https://google.com/';
+        var _this$storeActive;
+        return (((_this$storeActive = this.storeActive()) == null ? void 0 : _this$storeActive.baseUrl) || '').replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
+      }
+    }, {
+      key: "storeViewCounter",
+      get: function get() {
+        return this.pageBuilder.storeViewCounter;
       }
     }]);
   }();
   return LivePreview;
 });
-//# sourceMappingURL=live-preview.js.map

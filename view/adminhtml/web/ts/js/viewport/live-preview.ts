@@ -1,8 +1,10 @@
 import Config from "Magento_PageBuilder/js/config";
 import {Dictionary} from "underscore";
 import ko from 'knockout';
+import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
+import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder-mixin";
 
-type StoreInformation = { code: string, name: string };
+type StoreInformation = { code: string, name: string, baseUrl: string };
 
 export default class LivePreview {
     public readonly template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
@@ -23,14 +25,21 @@ export default class LivePreview {
     }
 
     public get previewLink(): string {
-        // this.storeActive()
-        return 'https://google.com/';
+        return (this.storeActive()?.baseUrl || '')
+            .replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
     }
 
-    constructor() {
+    public get storeViewCounter(): KnockoutObservable<object> {
+        return this.pageBuilder.storeViewCounter;
+    }
+
+    constructor(
+        protected readonly pageBuilder: PageBuilderInterface & PageBuilderMixin,
+    ) {
         document.addEventListener('click', this.onDocClick.bind(this));
         this.storeShown = ko.computed(() => !!this.storeActive());
     }
+
     public getTemplate(): string {
         return this.template;
     }
@@ -45,10 +54,6 @@ export default class LivePreview {
 
             this.dialogElement.show();
         }
-    }
-
-    public getConnectionCount(code: string): string {
-        return Number(0).toString(); // @todo
     }
 
     public setStoreActive(store?: StoreInformation): void {

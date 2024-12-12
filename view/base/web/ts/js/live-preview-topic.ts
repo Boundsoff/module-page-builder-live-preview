@@ -1,5 +1,3 @@
-enum LivePreviewTopic {
-    register,
-    close,
-    render,
-}
+export const REGISTER = 'register';
+export const CLOSE = 'close';
+export const RENDER = 'render';

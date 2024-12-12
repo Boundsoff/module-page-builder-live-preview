@@ -1,0 +1,25 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Boundsoff\PageBuilderLivePreview\ViewModel\LivePreviewDefault $viewModel */
+$viewModel = $block->getViewModel();
+$jsLayout = [
+    '#live-preview' => [
+        'Magento_Ui/js/core/app' => [
+            'components' => [
+                'renderer' => [
+                    'component' => 'Boundsoff_PageBuilderLivePreview/js/view/renderer',
+                    'config' => [
+                        'template' => 'Boundsoff_PageBuilderLivePreview/live-preview/renderer',
+                        'peerId' => $viewModel->getParamPeerId(),
+                        'storeCode' => $viewModel->getStoreCode(),
+                    ],
+                ]
+            ]
+        ]
+    ],
+];
+?>
+<div id="live-preview" data-bind="scope: 'renderer'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init"><?= $viewModel->getSerializer()->serialize($jsLayout) ?></script>
