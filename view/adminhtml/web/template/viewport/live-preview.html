@@ -18,14 +18,14 @@
             <li each="data: Object.values(stores), as: '$store'">
                 <a href="#" click="() => $parent.setStoreActive($store)">
                     <text args="$store.name"></text>
-                    (<text args="$parent.getConnectionCount($store.code)"></text>)
+                    (<text args="$parent.storeViewCounter()[$store.code] || 0"></text>)
                 </a>
             </li>
         </ol>
     </aside>
     <aside visible="storeShown">
         <a href="#" click="() => setStoreActive(null)" translate="'← back'"></a>
-        <p><text args="storeActive()?.name"></text> (<text args="getConnectionCount(storeActive())"></text>)</p>
+        <p><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</p>
         <p translate="'Link below is live preview, open in the browser'"></p>
         <pre><text args="previewLink"></text></pre>
         <ol>

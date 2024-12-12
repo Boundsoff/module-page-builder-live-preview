@@ -3,7 +3,7 @@ export interface SocketClient {
 }
 
 export interface SocketMessage {
-    topic: LivePreviewTopic,
+    topic: string,
     data?: SocketData,
 }
 

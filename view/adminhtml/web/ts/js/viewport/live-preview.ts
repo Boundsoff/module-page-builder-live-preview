@@ -29,6 +29,10 @@ export default class LivePreview {
             .replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
     }
 
+    public get storeViewCounter(): KnockoutObservable<object> {
+        return this.pageBuilder.storeViewCounter;
+    }
+
     constructor(
         protected readonly pageBuilder: PageBuilderInterface & PageBuilderMixin,
     ) {
@@ -53,7 +57,8 @@ export default class LivePreview {
     }
 
     public getConnectionCount(code: string): string {
-        return Number(0).toString(); // @todo
+        const count = this.pageBuilder.getCountStoreViews(code);
+        return Number(count).toString();
     }
 
     public setStoreActive(store?: StoreInformation): void {

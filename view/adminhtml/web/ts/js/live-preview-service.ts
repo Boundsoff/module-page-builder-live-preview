@@ -1,5 +1,6 @@
 // @ts-ignore
 import events from "Magento_PageBuilder/js/events";
+import ko from 'knockout';
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {
     RegisterSocketData, RenderSocketData,
@@ -8,6 +9,7 @@ import {
 } from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
 
 export default class {
+    readonly counter: KnockoutObservable<object> = ko.observable({});
     protected readonly peer: Peer;
     protected readonly clients: Map<DataConnection, SocketClient> = new Map();
     protected masterContentRendered: string;
@@ -43,7 +45,8 @@ export default class {
 
         connection.on('open', () => {
             connection.on('data', this.data.bind(this, connection));
-        })
+        });
+        connection.on('close', this.onClose.bind(this, connection));
 
         this.clients.set(connection, { storeViewCode: '-' });
     }
@@ -82,9 +85,21 @@ export default class {
         const messageData: RenderSocketData = { content: this.masterContentRendered };
         const message: SocketMessage = { topic: 'RENDER', data: messageData };
         connection.send(message);
+
+        const counter = this.counter();
+        counter[client.storeViewCode] = counter[client.storeViewCode] || 0;
+        counter[client.storeViewCode] += 1;
+        this.counter(counter);
     }
 
     protected onClose(connection: DataConnection): void {
+        const client = this.clients.get(connection);
+
+        const counter = this.counter();
+        counter[client.storeViewCode] = counter[client.storeViewCode] || 0;
+        counter[client.storeViewCode] = Math.max(counter[client.storeViewCode] - 1, 0);
+        this.counter(counter);
+
         this.clients.delete(connection);
         connection.close();
     }

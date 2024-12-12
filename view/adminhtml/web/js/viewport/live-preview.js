@@ -34,7 +34,8 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
       }
     };
     _proto.getConnectionCount = function getConnectionCount(code) {
-      return Number(0).toString(); // @todo
+      var count = this.pageBuilder.getCountStoreViews(code);
+      return Number(count).toString();
     };
     _proto.setStoreActive = function setStoreActive(store) {
       this.storeActive(store);
@@ -79,6 +80,11 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
       get: function get() {
         var _this$storeActive;
         return (((_this$storeActive = this.storeActive()) == null ? void 0 : _this$storeActive.baseUrl) || '').replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
+      }
+    }, {
+      key: "storeViewCounter",
+      get: function get() {
+        return this.pageBuilder.storeViewCounter;
       }
     }]);
   }();
