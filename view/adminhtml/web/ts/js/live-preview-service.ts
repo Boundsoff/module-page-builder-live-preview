@@ -2,7 +2,7 @@
 import events from "Magento_PageBuilder/js/events";
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {
-    RegisterSocketData,
+    RegisterSocketData, RenderSocketData,
     SocketClient,
     SocketMessage
 } from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
@@ -10,6 +10,7 @@ import {
 export default class {
     protected readonly peer: Peer;
     protected readonly clients: Map<DataConnection, SocketClient> = new Map();
+    protected masterContentRendered: string;
 
     get peerId(): string {
         return this.peer.id;
@@ -49,10 +50,10 @@ export default class {
 
     public data(connection: DataConnection, data: SocketMessage): void {
         switch (data.topic) {
-            case LivePreviewTopic.register:
+            case 'REGISTER':
                 this.onRegister(connection, <RegisterSocketData>data.data);
                 break;
-            case LivePreviewTopic.close:
+            case 'CLOSE':
                 this.onClose(connection);
                 break;
             default:
@@ -61,19 +62,26 @@ export default class {
         }
     }
 
-    protected afterMasterFormatRender({ value }: { value: string}): void {
+    protected afterMasterFormatRender({ value }: { value: string }): void {
+        this.masterContentRendered = value;
+
         if (!this.clients.size || !this.peer.open) {
             return;
         }
 
-        const socketMessage: SocketMessage = { topic: LivePreviewTopic.render, data: { value } }
+        const messageData: RenderSocketData = { content: this.masterContentRendered };
+        const message: SocketMessage = { topic: 'RENDER', data: messageData };
         Array.from(this.clients.keys())
-            .forEach(connection => connection.send(socketMessage));
+            .forEach(connection => connection.send(message));
     }
 
     protected onRegister(connection: DataConnection, data: RegisterSocketData): void {
         const client = this.clients.get(connection);
         client.storeViewCode = data.storeViewCode;
+
+        const messageData: RenderSocketData = { content: this.masterContentRendered };
+        const message: SocketMessage = { topic: 'RENDER', data: messageData };
+        connection.send(message);
     }
 
     protected onClose(connection: DataConnection): void {

@@ -41,10 +41,10 @@ define(["Magento_PageBuilder/js/events"], function (_events) {
     };
     _proto.data = function data(connection, _data) {
       switch (_data.topic) {
-        case LivePreviewTopic.register:
+        case 'REGISTER':
           this.onRegister(connection, _data.data);
           break;
-        case LivePreviewTopic.close:
+        case 'CLOSE':
           this.onClose(connection);
           break;
         default:
@@ -54,22 +54,32 @@ define(["Magento_PageBuilder/js/events"], function (_events) {
     };
     _proto.afterMasterFormatRender = function afterMasterFormatRender(_ref) {
       var value = _ref.value;
+      this.masterContentRendered = value;
       if (!this.clients.size || !this.peer.open) {
         return;
       }
-      var socketMessage = {
-        topic: LivePreviewTopic.render,
-        data: {
-          value: value
-        }
+      var messageData = {
+        content: this.masterContentRendered
+      };
+      var message = {
+        topic: 'RENDER',
+        data: messageData
       };
       Array.from(this.clients.keys()).forEach(function (connection) {
-        return connection.send(socketMessage);
+        return connection.send(message);
       });
     };
     _proto.onRegister = function onRegister(connection, data) {
       var client = this.clients.get(connection);
       client.storeViewCode = data.storeViewCode;
+      var messageData = {
+        content: this.masterContentRendered
+      };
+      var message = {
+        topic: 'RENDER',
+        data: messageData
+      };
+      connection.send(message);
     };
     _proto.onClose = function onClose(connection) {
       this.clients.delete(connection);
