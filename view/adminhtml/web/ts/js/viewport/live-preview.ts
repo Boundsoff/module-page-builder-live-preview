@@ -56,11 +56,6 @@ export default class LivePreview {
         }
     }
 
-    public getConnectionCount(code: string): string {
-        const count = this.pageBuilder.getCountStoreViews(code);
-        return Number(count).toString();
-    }
-
     public setStoreActive(store?: StoreInformation): void {
         this.storeActive(store);
     }
