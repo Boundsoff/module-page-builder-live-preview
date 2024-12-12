@@ -86,4 +86,3 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
   }();
   return LivePreview;
 });
-//# sourceMappingURL=live-preview.js.map
