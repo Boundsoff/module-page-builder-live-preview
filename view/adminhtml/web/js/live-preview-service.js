@@ -1,10 +1,13 @@
 /*eslint-disable */
 /* jscs:disable */
+function _createForOfIteratorHelperLoose(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (t) return (t = t.call(r)).next.bind(t); if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var o = 0; return function () { return o >= r.length ? { done: !0 } : { done: !1, value: r[o++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-define(["Magento_PageBuilder/js/events", "knockout"], function (_events, _knockout) {
+define(["Magento_PageBuilder/js/events", "knockout", "jquery", "Magento_PageBuilder/js/config"], function (_events, _knockout, _jquery, _config) {
   // @ts-ignore
   var _default = /*#__PURE__*/function () {
     "use strict";
@@ -54,38 +57,60 @@ define(["Magento_PageBuilder/js/events", "knockout"], function (_events, _knocko
           break;
       }
     };
+    _proto.fetchContent = function fetchContent(storeCode, content) {
+      var url = _config.getConfig('directive_filter_url');
+      var request = {
+        method: 'POST',
+        data: {
+          storeCode: storeCode,
+          content: content
+        }
+      };
+      return _jquery.ajax(url, request);
+    };
     _proto.afterMasterFormatRender = function afterMasterFormatRender(_ref) {
+      var _this3 = this;
       var value = _ref.value;
       this.masterContentRendered = value;
       if (!this.clients.size || !this.peer.open) {
         return;
       }
-      var messageData = {
-        content: this.masterContentRendered
+      var _loop = function _loop() {
+        var _step$value = _step.value,
+          connection = _step$value[0],
+          client = _step$value[1];
+        _this3.fetchContent(client.storeViewCode, _this3.masterContentRendered).then(function (content) {
+          var messageData = {
+            content: content
+          };
+          var message = {
+            topic: 'RENDER',
+            data: messageData
+          };
+          connection.send(message);
+        });
       };
-      var message = {
-        topic: 'RENDER',
-        data: messageData
-      };
-      Array.from(this.clients.keys()).forEach(function (connection) {
-        return connection.send(message);
-      });
+      for (var _iterator = _createForOfIteratorHelperLoose(this.clients.entries()), _step; !(_step = _iterator()).done;) {
+        _loop();
+      }
     };
     _proto.onRegister = function onRegister(connection, data) {
       var client = this.clients.get(connection);
       client.storeViewCode = data.storeViewCode;
-      var messageData = {
-        content: this.masterContentRendered
-      };
-      var message = {
-        topic: 'RENDER',
-        data: messageData
-      };
-      connection.send(message);
       var counter = this.counter();
       counter[client.storeViewCode] = counter[client.storeViewCode] || 0;
       counter[client.storeViewCode] += 1;
       this.counter(counter);
+      this.fetchContent(client.storeViewCode, this.masterContentRendered).then(function (content) {
+        var messageData = {
+          content: content
+        };
+        var message = {
+          topic: 'RENDER',
+          data: messageData
+        };
+        connection.send(message);
+      });
     };
     _proto.onClose = function onClose(connection) {
       var client = this.clients.get(connection);
@@ -105,3 +130,4 @@ define(["Magento_PageBuilder/js/events", "knockout"], function (_events, _knocko
   }();
   return _default;
 });
+//# sourceMappingURL=live-preview-service.js.map

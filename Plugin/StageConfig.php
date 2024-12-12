@@ -2,6 +2,7 @@
 
 namespace Boundsoff\PageBuilderLivePreview\Plugin;
 
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Asset\Repository;
 use Magento\PageBuilder\Model\Stage\Config;
 use Magento\Store\Api\Data\StoreInterface;
@@ -12,8 +13,9 @@ use Magento\Store\Model\Store;
 class StageConfig
 {
     public function __construct(
-        protected readonly Repository $assetRepo,
+        protected readonly Repository               $assetRepo,
         protected readonly StoreRepositoryInterface $storeRepository,
+        protected readonly UrlInterface             $urlBuilder,
     )
     {
 
@@ -31,10 +33,11 @@ class StageConfig
         $staticUrl = str_replace(['https:', 'http:'], '', $staticUrl);
 
         $stores = $this->storeRepository->getList();
-        $stores = array_filter($stores, fn (StoreInterface $store) => $store->getCode() !== 'admin');
-        $stores = array_map(fn (StoreInterface $store) => [$store->getCode(), $this->getStoreInformation($store)], $stores);
+        $stores = array_filter($stores, fn(StoreInterface $store) => $store->getCode() !== 'admin');
+        $stores = array_map(fn(StoreInterface $store) => [$store->getCode(), $this->getStoreInformation($store)], $stores);
         $stores = array_column($stores, 1, 0);
 
+        $result['directive_filter_url'] = $this->urlBuilder->getUrl('live-preview/directive/filter');
         $result['theme_url'] = $staticUrl;
         $result['stores'] = $stores;
         return $result;

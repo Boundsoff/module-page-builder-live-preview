@@ -50,3 +50,4 @@ define(["knockout"], function (_knockout) {
   }();
   return LivePreviewService;
 });
+//# sourceMappingURL=live-preview-service.js.map
