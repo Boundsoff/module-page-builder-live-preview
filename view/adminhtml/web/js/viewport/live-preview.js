@@ -33,10 +33,6 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
         this.dialogElement.show();
       }
     };
-    _proto.getConnectionCount = function getConnectionCount(code) {
-      var count = this.pageBuilder.getCountStoreViews(code);
-      return Number(count).toString();
-    };
     _proto.setStoreActive = function setStoreActive(store) {
       this.storeActive(store);
     };
@@ -90,4 +86,3 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
   }();
   return LivePreview;
 });
-//# sourceMappingURL=live-preview.js.map

@@ -18,7 +18,7 @@
     "ts:build:frontend:watch": "npm run ts:build:frontend:source -- --watch",
     "prestart": "npm i --no-save",
     "start": "npm-run-all --parallel ts:build:admin:watch ts:build:base:watch ts:build:frontend:watch",
-    "build": "npm-run-all --parallel ts:build:**"
+    "build": "npm-run-all --parallel ts:build:admin ts:build:base ts:build:frontend"
   },
   "devDependencies": {
     "@babel/cli": "~7.25.9",
