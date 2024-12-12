@@ -19,6 +19,12 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
       this.storeShown = _knockout.computed(function () {
         return !!_this.storeActive();
       });
+      this.storeActive.subscribe(function () {
+        if (_this.qrcode) {
+          _this.qrcode.clear();
+          _this.qrcode.makeCode(_this.previewLink);
+        }
+      });
     }
     var _proto = LivePreview.prototype;
     _proto.getTemplate = function getTemplate() {
@@ -26,6 +32,12 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
     };
     _proto.bindDialog = function bindDialog(modelElement) {
       this.dialogElement = modelElement;
+    };
+    _proto.bindQrElement = function bindQrElement(qrElement) {
+      this.qrElement = qrElement;
+      this.qrcode = new QRCode(this.qrElement, {
+        text: this.previewLink
+      });
     };
     _proto.onPreviewClick = function onPreviewClick(_, event) {
       if (!this.dialogElement.open) {
@@ -86,3 +98,4 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
   }();
   return LivePreview;
 });
+//# sourceMappingURL=live-preview.js.map

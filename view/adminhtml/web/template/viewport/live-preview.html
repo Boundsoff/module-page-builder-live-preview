@@ -27,6 +27,7 @@
         <a href="#" click="() => setStoreActive(null)" translate="'← back'"></a>
         <p><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</p>
         <p translate="'Link below is live preview, open in the browser'"></p>
+        <div afterRender="bindQrElement"></div>
         <pre><text args="previewLink"></text></pre>
         <ol>
             <li><button type="button" class="action-secondary" click="copyLink" translate="copyStatus"></button></li>

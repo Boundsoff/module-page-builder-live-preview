@@ -6,6 +6,13 @@ import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder
 
 type StoreInformation = { code: string, name: string, baseUrl: string };
 
+declare class QRCode {
+    constructor(element: string | HTMLElement, config: object);
+
+    clear(): void;
+    makeCode(text: string): void;
+}
+
 export default class LivePreview {
     public readonly template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
     public readonly storeActive?: KnockoutObservable<StoreInformation | null> = ko.observable(null);
@@ -13,6 +20,8 @@ export default class LivePreview {
     public readonly storeShown: KnockoutObservable<boolean>;
     protected readonly icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
     protected dialogElement: HTMLDialogElement;
+    protected qrElement: HTMLDivElement;
+    private qrcode: QRCode;
 
     public get srcIcomoonFeed(): string {
         const themeUrl = Config.getConfig('theme_url');
@@ -38,6 +47,12 @@ export default class LivePreview {
     ) {
         document.addEventListener('click', this.onDocClick.bind(this));
         this.storeShown = ko.computed(() => !!this.storeActive());
+        this.storeActive.subscribe(() => {
+            if (this.qrcode) {
+                this.qrcode.clear();
+                this.qrcode.makeCode(this.previewLink);
+            }
+        })
     }
 
     public getTemplate(): string {
@@ -46,6 +61,13 @@ export default class LivePreview {
 
     public bindDialog(modelElement: HTMLDialogElement): void {
         this.dialogElement = modelElement;
+    }
+
+    public bindQrElement(qrElement: HTMLDivElement): void {
+        this.qrElement = qrElement;
+        this.qrcode = new QRCode(this.qrElement, {
+            text: this.previewLink,
+        })
     }
 
     public onPreviewClick(_: any, event: MouseEvent): void {
