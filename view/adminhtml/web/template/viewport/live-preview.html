@@ -1,3 +1,30 @@
+<dialog class="live-preview" afterRender="bindDialog">
+    <aside class="store-views" visible="storeShown() === false">
+        <p translate="'Store Views'"></p>
+        <ol>
+            <li each="data: Object.values(stores), as: '$store'">
+                <a href="#" click="() => $parent.setStoreActive($store)">
+                    <text args="$store.name"></text>
+                    <span class="counter"><text args="$parent.storeViewCounter()[$store.code] || 0"></text></span>
+                </a>
+            </li>
+        </ol>
+    </aside>
+    <aside class="details" visible="storeShown">
+        <p><a class="action-back" href="#" click="() => setStoreActive(null)" translate="'← back'"></a></p>
+        <p><strong><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</strong></p>
+        <p translate="'Link below is live preview, open in the browser'"></p>
+        <pre><text args="previewLink"></text></pre>
+        <div afterRender="bindQrElement"></div>
+        <ol>
+            <li>
+                <button type="button" class="action-secondary" click="copyLink" translate="copyStatus"></button>
+            </li>
+            <li><a data-bind="attr: { href: previewLink }" target="_blank" class="action-primary"
+                   translate="'Open 🔗'"></a></li>
+        </ol>
+    </aside>
+</dialog>
 <span class="tooltip">
     <button
         type="button"
@@ -6,32 +33,4 @@
     >
         <img data-bind="attr: { src: srcIcomoonFeed }" draggable="false" aria-hidden="true"/>
     </button>
-    <span class="tooltip-content">
-        <span class="tooltip-label" translate="'Live Preview'"></span><br/>
-        <span translate="'View your content with browser'"></span><br/>
-    </span>
 </span>
-<dialog afterRender="bindDialog">
-    <aside visible="storeShown() === false">
-        <p translate="'Stores'"></p>
-        <ol>
-            <li each="data: Object.values(stores), as: '$store'">
-                <a href="#" click="() => $parent.setStoreActive($store)">
-                    <text args="$store.name"></text>
-                    (<text args="$parent.storeViewCounter()[$store.code] || 0"></text>)
-                </a>
-            </li>
-        </ol>
-    </aside>
-    <aside visible="storeShown">
-        <a href="#" click="() => setStoreActive(null)" translate="'← back'"></a>
-        <p><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</p>
-        <p translate="'Link below is live preview, open in the browser'"></p>
-        <div afterRender="bindQrElement"></div>
-        <pre><text args="previewLink"></text></pre>
-        <ol>
-            <li><button type="button" class="action-secondary" click="copyLink" translate="copyStatus"></button></li>
-            <li><a data-bind="attr: { href: previewLink }" target="_blank" class="action-primary" translate="'Open 🔗'"></a></li>
-        </ol>
-    </aside>
-</dialog>
