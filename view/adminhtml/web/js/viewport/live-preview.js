@@ -35,7 +35,7 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
     };
     _proto.bindQrElement = function bindQrElement(qrElement) {
       this.qrElement = qrElement;
-      this.qrcode = new QRCode(this.qrElement, {
+      this.qrcode = new QrcodeMin(this.qrElement, {
         text: this.previewLink
       });
     };

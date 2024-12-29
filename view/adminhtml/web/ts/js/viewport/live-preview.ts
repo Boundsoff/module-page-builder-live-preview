@@ -6,7 +6,7 @@ import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder
 
 type StoreInformation = { code: string, name: string, baseUrl: string };
 
-declare class QRCode {
+declare class QrcodeMin {
     constructor(element: string | HTMLElement, config: object);
 
     clear(): void;
@@ -21,7 +21,7 @@ export default class LivePreview {
     protected readonly icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
     protected dialogElement: HTMLDialogElement;
     protected qrElement: HTMLDivElement;
-    private qrcode: QRCode;
+    private qrcode: QrcodeMin;
 
     public get srcIcomoonFeed(): string {
         const themeUrl = Config.getConfig('theme_url');
@@ -65,7 +65,7 @@ export default class LivePreview {
 
     public bindQrElement(qrElement: HTMLDivElement): void {
         this.qrElement = qrElement;
-        this.qrcode = new QRCode(this.qrElement, {
+        this.qrcode = new QrcodeMin(this.qrElement, {
             text: this.previewLink,
         })
     }
