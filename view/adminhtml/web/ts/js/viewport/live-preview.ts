@@ -3,8 +3,9 @@ import {Dictionary} from "underscore";
 import ko from 'knockout';
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder-mixin";
+import StoreOptions, {StoreOption} from "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options";
 
-type StoreInformation = { code: string, name: string, baseUrl: string };
+type StoreInformation = { id: number, code: string, name: string, baseUrl: string };
 
 declare class QrcodeMin {
     constructor(element: string | HTMLElement, config: object);
@@ -18,6 +19,7 @@ export default class LivePreview {
     public readonly storeActive?: KnockoutObservable<StoreInformation | null> = ko.observable(null);
     public readonly copyStatus: KnockoutObservable<string> = ko.observable('Copy ©');
     public readonly storeShown: KnockoutObservable<boolean>;
+    public readonly storeOptionsComponent: StoreOptions;
     protected readonly icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
     protected dialogElement: HTMLDialogElement;
     protected qrElement: HTMLDivElement;
@@ -33,6 +35,10 @@ export default class LivePreview {
         return Config.getConfig('stores');
     }
 
+    public get storeOptions(): StoreOption[] {
+        return Config.getConfig('store_options')
+    }
+
     public get previewLink(): string {
         return (this.storeActive()?.baseUrl || '')
             .replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
@@ -45,6 +51,8 @@ export default class LivePreview {
     constructor(
         protected readonly pageBuilder: PageBuilderInterface & PageBuilderMixin,
     ) {
+        this.storeOptionsComponent = new StoreOptions(this.storeOptions);
+
         document.addEventListener('click', this.onDocClick.bind(this));
         this.storeShown = ko.computed(() => !!this.storeActive());
         this.storeActive.subscribe(() => {
