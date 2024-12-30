@@ -4,7 +4,6 @@ import LivePreviewService from "Boundsoff_PageBuilderLivePreview/js/live-preview
 
 export interface PageBuilderMixin {
     get livePreviewPeerId(): string;
-    get storeViewCounter(): KnockoutObservable<object>;
 }
 
 export default function (base: typeof PageBuilder) {
@@ -19,11 +18,6 @@ export default function (base: typeof PageBuilder) {
         get livePreviewPeerId(): string {
             return this.livePreviewService.peerId;
         }
-
-        get storeViewCounter(): KnockoutObservable<object> {
-            return this.livePreviewService.counter;
-        }
-
         constructor(config: any, initialValue: string) {
             super(config, initialValue);
             this.livePreview = new LivePreview(this);

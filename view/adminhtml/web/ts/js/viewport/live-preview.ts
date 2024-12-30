@@ -4,19 +4,19 @@ import ko from 'knockout';
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder-mixin";
 import StoreOptions, {StoreOption} from "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options";
-
-type StoreInformation = { id: number, code: string, name: string, baseUrl: string };
+import {active, counter, StoreInformation} from "Boundsoff_PageBuilderLivePreview/js/model/stores";
 
 declare class QrcodeMin {
     constructor(element: string | HTMLElement, config: object);
 
     clear(): void;
+
     makeCode(text: string): void;
 }
 
 export default class LivePreview {
     public readonly template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
-    public readonly storeActive?: KnockoutObservable<StoreInformation | null> = ko.observable(null);
+    public readonly storeActive = active;
     public readonly copyStatus: KnockoutObservable<string> = ko.observable('Copy ©');
     public readonly storeShown: KnockoutObservable<boolean>;
     public readonly storeOptionsComponent: StoreOptions;
@@ -45,7 +45,7 @@ export default class LivePreview {
     }
 
     public get storeViewCounter(): KnockoutObservable<object> {
-        return this.pageBuilder.storeViewCounter;
+        return counter;
     }
 
     constructor(

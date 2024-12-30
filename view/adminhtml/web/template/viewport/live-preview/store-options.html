@@ -3,7 +3,7 @@
         <!-- ko if: $option.isStore -->
             <a href="#" click="() => $parent.setStoreActive($option.value)">
                 <text args="$option.value.name"></text>
-                <span class="counter"><text args="0"></text></span>
+                <span class="counter"><text args="$parent.storeViewCounter()[$option.value.code] || 0"></text></span>
             </a>
         <!-- /ko -->
         <!-- ko ifnot: $option.isStore -->

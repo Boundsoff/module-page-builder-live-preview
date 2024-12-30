@@ -9,9 +9,10 @@ import {
     SocketMessage
 } from "Boundsoff_PageBuilderLivePreview/js/live-preview-service.types";
 import Config from "Magento_PageBuilder/js/config";
+import {counter} from "Boundsoff_PageBuilderLivePreview/js/model/stores";
 
 export default class {
-    readonly counter: KnockoutObservable<object> = ko.observable({});
+    readonly counter = counter;
     protected readonly peer: Peer;
     protected readonly clients: Map<DataConnection, SocketClient> = new Map();
     protected masterContentRendered: string;

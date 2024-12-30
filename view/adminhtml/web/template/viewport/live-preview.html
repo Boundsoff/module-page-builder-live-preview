@@ -6,7 +6,10 @@
     </aside>
     <aside class="details" visible="storeShown">
         <p><a class="action-back" href="#" click="() => setStoreActive(null)" translate="'← back'"></a></p>
-        <p><strong><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</strong></p>
+        <p>
+            <strong><text args="storeActive()?.name"></text></strong>
+            <span class="counter"><text args="storeViewCounter()[storeActive()?.code] || 0"></text></span>
+        </p>
         <p translate="'Link below is live preview, open in the browser'"></p>
         <pre><text args="previewLink"></text></pre>
         <div afterRender="bindQrElement"></div>
