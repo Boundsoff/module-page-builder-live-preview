@@ -39,11 +39,6 @@ define(["Boundsoff_PageBuilderLivePreview/js/viewport/live-preview", "Boundsoff_
         get: function get() {
           return this.livePreviewService.peerId;
         }
-      }, {
-        key: "storeViewCounter",
-        get: function get() {
-          return this.livePreviewService.counter;
-        }
       }]);
     }(base);
   }

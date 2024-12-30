@@ -7,14 +7,14 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-define(["Magento_PageBuilder/js/events", "knockout", "jquery", "Magento_PageBuilder/js/config"], function (_events, _knockout, _jquery, _config) {
+define(["Magento_PageBuilder/js/events", "jquery", "Magento_PageBuilder/js/config", "Boundsoff_PageBuilderLivePreview/js/model/stores"], function (_events, _jquery, _config, _stores) {
   // @ts-ignore
   var _default = /*#__PURE__*/function () {
     "use strict";
 
     function _default(pageBuilder) {
       var _this = this;
-      this.counter = _knockout.observable({});
+      this.counter = _stores.counter;
       this.clients = new Map();
       this.pageBuilder = pageBuilder;
       window.addEventListener('beforeunload', function () {

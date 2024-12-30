@@ -4,14 +4,14 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-define(["Magento_PageBuilder/js/config", "knockout", "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options"], function (_config, _knockout, _storeOptions) {
+define(["Magento_PageBuilder/js/config", "knockout", "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options", "Boundsoff_PageBuilderLivePreview/js/model/stores"], function (_config, _knockout, _storeOptions, _stores) {
   var LivePreview = /*#__PURE__*/function () {
     "use strict";
 
     function LivePreview(pageBuilder) {
       var _this = this;
       this.template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
-      this.storeActive = _knockout.observable(null);
+      this.storeActive = _stores.active;
       this.copyStatus = _knockout.observable('Copy ©');
       this.icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
       this.pageBuilder = pageBuilder;
@@ -98,7 +98,7 @@ define(["Magento_PageBuilder/js/config", "knockout", "Boundsoff_PageBuilderLiveP
     }, {
       key: "storeViewCounter",
       get: function get() {
-        return this.pageBuilder.storeViewCounter;
+        return _stores.counter;
       }
     }]);
   }();
