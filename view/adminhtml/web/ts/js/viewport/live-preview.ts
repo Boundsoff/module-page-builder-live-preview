@@ -3,25 +3,27 @@ import {Dictionary} from "underscore";
 import ko from 'knockout';
 import PageBuilderInterface from "Magento_PageBuilder/js/page-builder.types";
 import {PageBuilderMixin} from "Boundsoff_PageBuilderLivePreview/js/page-builder-mixin";
+import StoreOptions, {StoreOption} from "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options";
+import {active, counter, StoreInformation} from "Boundsoff_PageBuilderLivePreview/js/model/stores";
 
-type StoreInformation = { code: string, name: string, baseUrl: string };
-
-declare class QRCode {
+declare class QrcodeMin {
     constructor(element: string | HTMLElement, config: object);
 
     clear(): void;
+
     makeCode(text: string): void;
 }
 
 export default class LivePreview {
     public readonly template = 'Boundsoff_PageBuilderLivePreview/viewport/live-preview';
-    public readonly storeActive?: KnockoutObservable<StoreInformation | null> = ko.observable(null);
+    public readonly storeActive = active;
     public readonly copyStatus: KnockoutObservable<string> = ko.observable('Copy ©');
     public readonly storeShown: KnockoutObservable<boolean>;
+    public readonly storeOptionsComponent: StoreOptions;
     protected readonly icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
     protected dialogElement: HTMLDialogElement;
     protected qrElement: HTMLDivElement;
-    private qrcode: QRCode;
+    private qrcode: QrcodeMin;
 
     public get srcIcomoonFeed(): string {
         const themeUrl = Config.getConfig('theme_url');
@@ -33,18 +35,24 @@ export default class LivePreview {
         return Config.getConfig('stores');
     }
 
+    public get storeOptions(): StoreOption[] {
+        return Config.getConfig('store_options')
+    }
+
     public get previewLink(): string {
         return (this.storeActive()?.baseUrl || '')
             .replace(':peer-id:', this.pageBuilder.livePreviewPeerId);
     }
 
     public get storeViewCounter(): KnockoutObservable<object> {
-        return this.pageBuilder.storeViewCounter;
+        return counter;
     }
 
     constructor(
         protected readonly pageBuilder: PageBuilderInterface & PageBuilderMixin,
     ) {
+        this.storeOptionsComponent = new StoreOptions(this.storeOptions);
+
         document.addEventListener('click', this.onDocClick.bind(this));
         this.storeShown = ko.computed(() => !!this.storeActive());
         this.storeActive.subscribe(() => {
@@ -65,7 +73,7 @@ export default class LivePreview {
 
     public bindQrElement(qrElement: HTMLDivElement): void {
         this.qrElement = qrElement;
-        this.qrcode = new QRCode(this.qrElement, {
+        this.qrcode = new QrcodeMin(this.qrElement, {
             text: this.previewLink,
         })
     }

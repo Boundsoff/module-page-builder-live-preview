@@ -1,0 +1,16 @@
+<ol each="data: options, as: '$option'">
+    <li data-bind="style: { '--depth': $option.depth }">
+        <!-- ko if: $option.isStore -->
+            <a href="#" click="() => $parent.setStoreActive($option.value)">
+                <text args="$option.value.name"></text>
+                <span class="counter"><text args="$parent.storeViewCounter()[$option.value.code] || 0"></text></span>
+            </a>
+        <!-- /ko -->
+        <!-- ko ifnot: $option.isStore -->
+        <label><!-- ko text: $option.label --><!-- /ko --></label>
+        <with args="$option.value">
+            <render></render>
+        </with>
+        <!-- /ko -->
+    </li>
+</ol>

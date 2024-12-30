@@ -4,7 +4,7 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knockout) {
+define(["Magento_PageBuilder/js/config", "knockout", "Boundsoff_PageBuilderLivePreview/js/viewport/live-preview/store-options"], function (_config, _knockout, _storeOptions) {
   var LivePreview = /*#__PURE__*/function () {
     "use strict";
 
@@ -15,6 +15,7 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
       this.copyStatus = _knockout.observable('Copy ©');
       this.icomoonFeed = 'Boundsoff_PageBuilderLivePreview/icomoon/feed.svg';
       this.pageBuilder = pageBuilder;
+      this.storeOptionsComponent = new _storeOptions(this.storeOptions);
       document.addEventListener('click', this.onDocClick.bind(this));
       this.storeShown = _knockout.computed(function () {
         return !!_this.storeActive();
@@ -35,7 +36,7 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
     };
     _proto.bindQrElement = function bindQrElement(qrElement) {
       this.qrElement = qrElement;
-      this.qrcode = new QRCode(this.qrElement, {
+      this.qrcode = new QrcodeMin(this.qrElement, {
         text: this.previewLink
       });
     };
@@ -82,6 +83,11 @@ define(["Magento_PageBuilder/js/config", "knockout"], function (_config, _knocko
       key: "stores",
       get: function get() {
         return _config.getConfig('stores');
+      }
+    }, {
+      key: "storeOptions",
+      get: function get() {
+        return _config.getConfig('store_options');
       }
     }, {
       key: "previewLink",

@@ -1,18 +1,15 @@
 <dialog class="live-preview" afterRender="bindDialog">
     <aside class="store-views" visible="storeShown() === false">
-        <p translate="'Store Views'"></p>
-        <ol>
-            <li each="data: Object.values(stores), as: '$store'">
-                <a href="#" click="() => $parent.setStoreActive($store)">
-                    <text args="$store.name"></text>
-                    <span class="counter"><text args="$parent.storeViewCounter()[$store.code] || 0"></text></span>
-                </a>
-            </li>
-        </ol>
+        <with args="storeOptionsComponent">
+            <render></render>
+        </with>
     </aside>
     <aside class="details" visible="storeShown">
         <p><a class="action-back" href="#" click="() => setStoreActive(null)" translate="'← back'"></a></p>
-        <p><strong><text args="storeActive()?.name"></text> (<text args="storeViewCounter()[storeActive()?.code] || 0"></text>)</strong></p>
+        <p>
+            <strong><text args="storeActive()?.name"></text></strong>
+            <span class="counter"><text args="storeViewCounter()[storeActive()?.code] || 0"></text></span>
+        </p>
         <p translate="'Link below is live preview, open in the browser'"></p>
         <pre><text args="previewLink"></text></pre>
         <div afterRender="bindQrElement"></div>
