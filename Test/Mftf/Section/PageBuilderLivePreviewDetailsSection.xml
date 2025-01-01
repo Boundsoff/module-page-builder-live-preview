@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="PageBuilderLivePreviewDetailsSection">
+        <element name="actionBack" type="block"
+                 selector="dialog.live-preview .details .action-back"/>
+        <element name="titleStoreByName" type="block"
+                 selector="//*[@class='details']/p/strong[contains(text(), '{{storeViewName}}')]"
+                 parameterized="true"/>
+        <element name="counterStoreSession" type="block"
+                 selector="//*[@class='details']/p/*[@class='counter']"/>
+        <element name="counterStoreSessionByCount" type="block"
+                 selector="//*[@class='details']/p/*[@class='counter'][contains(text(), '{{countStore}}')]"
+                 parameterized="true"/>
+        <element name="formatedLink" type="block"
+                 selector="dialog.live-preview .details pre"/>
+        <element name="qrImg" type="block"
+                 selector="dialog.live-preview .details div > img"/>
+        <element name="ctaCopy" type="button"
+                 selector="dialog.live-preview .details ol li > button"/>
+        <element name="ctaOpen" type="block"
+                 selector="dialog.live-preview .details ol li > a"/>
+    </section>
+</sections>
