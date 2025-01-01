@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminVerifyLivePreviewDialogListTest" extends="AdminVerifyLivePreviewStoresTest">
+        <annotations>
+            <title value="Check for stores information"/>
+            <stories value="Live preview"/>
+            <description value="Checking information in store view."/>
+            <severity value="MAJOR"/>
+        </annotations>
+        <!-- Verify viewport button and dialog -->
+        <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
+                     before="verifyWebsiteCustomNode"/>
+        <!-- Verify custom store structure -->
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.websiteNodeByName(customWebsite.name)}}"
+            stepKey="verifyWebsiteCustomNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.groupNodeByName(customStoreGroup.name)}}"
+            stepKey="verifyGroupCustomNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.code)}}"
+            stepKey="verifyStoreCustomNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(customStore.code, '0')}}"
+            stepKey="verifyStoreCountNode"/>
+        <!-- Verify custom second store structure -->
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.websiteNodeByName(secondCustomWebsite.name)}}"
+            stepKey="verifyWebsiteCustomSecondNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.groupNodeByName(SecondStoreGroup.name)}}"
+            stepKey="verifyGroupCustomSecondNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(SecondStoreUnique.code)}}"
+            stepKey="verifyStoreCustomSecondNode"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(SecondStoreUnique.code, '0')}}"
+            stepKey="verifyStoreSecondCountNode"/>
+        <!-- Verify disabled store no visible -->
+        <dontSeeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(storeViewDataDisabled.code)}}"
+            stepKey="verifyDisabledStore"/>
+    </test>
+</tests>

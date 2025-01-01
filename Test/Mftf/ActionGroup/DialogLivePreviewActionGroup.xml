@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="DialogLivePreviewActionGroup">
+        <!-- Verify viewport button -->
+        <waitForElementVisible selector="{{PageBuilderViewportLivePreviewSection.viewportButton}}"
+                               stepKey="verifyViewportButtonIsVisible"/>
+        <!-- Verify dialog element -->
+        <clickWithLeftButton selector="{{PageBuilderViewportLivePreviewSection.viewportButton}}"
+                             stepKey="clickViewportButton"/>
+        <waitForElementVisible selector="{{PageBuilderViewportLivePreviewSection.dialogLivePreview}}"
+                               stepKey="verifyDialogLivePreview"/>
+    </actionGroup>
+</actionGroups>
