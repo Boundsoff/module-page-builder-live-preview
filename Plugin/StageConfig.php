@@ -57,7 +57,7 @@ class StageConfig
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getInfo(StoreInterface $store): array
+    protected function getInfo(StoreInterface $store): array
     {
         $baseUrl = $store->getBaseUrl();
         $baseUrl = trim($baseUrl, '/');
