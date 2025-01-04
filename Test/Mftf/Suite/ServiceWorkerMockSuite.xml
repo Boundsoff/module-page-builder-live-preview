@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Suite/etc/suiteSchema.xsd">
+    <suite name="ServiceWorkerMockSuite">
+        <before>
+            <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper"
+                    method="installServiceWorker"
+                    stepKey="installServiceWorker"/>
+        </before>
+        <after>
+            <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper"
+                    method="uninstallServiceWorker"
+                    stepKey="uninstallServiceWorker"/>
+        </after>
+        <include>
+            <group name="service-worker-mock-service"/>
+        </include>
+    </suite>
+</suites>

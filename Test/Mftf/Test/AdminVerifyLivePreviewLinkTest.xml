@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="AdminVerifyLivePreviewDialogDetailsTest" extends="AdminVerifyLivePreviewStoresTest">
+    <test name="AdminVerifyLivePreviewLinkTest">
         <annotations>
-            <title value="Check for store details"/>
+            <title value="Check for link features"/>
             <stories value="Live preview"/>
-            <description value="Checking live preview details information about new connection."/>
+            <description value="Checking for qr code, link element, copy button and anchor."/>
             <severity value="MAJOR"/>
+            <group value="service-worker-mock-service"/>
         </annotations>
-        <!-- Verify viewport button and dialog -->
-        <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
-                     before="clickForDetailsInformation"/>
-        <!-- Display details information -->
-        <clickWithLeftButton
-            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.name)}}"
-            stepKey="clickForDetailsInformation"/>
-        <!-- Verify the elements -->
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.actionBack}}" stepKey="verifyBackElement"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.titleStoreByName(customStore.name)}}"
-                    stepKey="verifyStoreName"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSession}}" stepKey="verifyCounter"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="verifyFormatedLinked"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.qrImg}}" stepKey="verifyImageQR"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.ctaCopy}}" stepKey="verifyActionCopy"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.ctaOpen}}" stepKey="verifyActionOpen"/>
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper" method="appendMixin"
+                    stepKey="registerLivePreviewMock">
+                <argument name="component">Boundsoff_PageBuilderLivePreview/js/viewport/live-preview</argument>
+                <argument name="mixin">Boundsoff_PageBuilderLivePreview/js/viewport/live-preview-mock</argument>
+            </helper>
+            <pause stepKey="pauseDevelop"/>
+        </before>
     </test>
 </tests>

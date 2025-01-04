@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Boundsoff\PageBuilderLivePreview\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">require-mock-service</argument>
+        </arguments>
+    </virtualType>
+    <type name="\Boundsoff\PageBuilderLivePreview\Controller\ServiceWorker\RequireJsConfig">
+        <arguments>
+            <argument name="sessionStorage" xsi:type="object">
+                Boundsoff\PageBuilderLivePreview\Model\Session\Storage
+            </argument>
+        </arguments>
+    </type>
+</config>
