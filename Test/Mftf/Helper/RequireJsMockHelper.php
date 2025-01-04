@@ -4,6 +4,7 @@ namespace Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper;
 
 use Codeception\TestInterface;
 use Facebook\WebDriver\Remote\RemoteWebDriver as FacebookWebDriver;
+use Facebook\WebDriver\WebDriverKeys;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Asset\Repository as AssetRepository;
 use Magento\FunctionalTestingFramework\Helper\Helper;
@@ -12,23 +13,32 @@ use Magento\Persistent\Helper\Session;
 
 class RequireJsMockHelper extends Helper
 {
-    protected static $configMixin = [];
+    protected static array $configMixin = [];
 
-    public function installServiceWorker(): void
+    public function installServiceWorker(string $adminName = ''): void
     {
+        if (!empty($adminName)) {
+            $adminName = "/{$adminName}";
+        }
+
         $scriptInstall = <<<JS
+const [areaCode] = arguments;
 if (navigator?.serviceWorker) {
-        navigator.serviceWorker.register('/sw-mock-service.js', {
-            scope: '/',
+        navigator.serviceWorker.register(`\${areaCode}/sw-mock-service.js`, {
+            scope: `\${areaCode}/`,
         })
             .then(registration => {
                 switch(true) {
                     case !!registration.installing:
                     case !!registration.waiting:
                     case !!registration.active:
-                        break; // @todo should log this somehow
+                        console.log('registration.installing', !!registration.installing);
+                        console.log('registration.waiting', !!registration.waiting);
+                        console.log('registration.active', !!registration.active);
+                        break;
                     default:
-                        break; // @todo should throw some kind of error
+                        console.log('registration.unknown', registration);
+                        break;
                 }
             })
             .catch(error => {
@@ -41,7 +51,7 @@ JS;
         /** @var FacebookWebDriver $webDriver */
         $magentoWebDriver = $this->getModule('\Magento\FunctionalTestingFramework\Module\MagentoWebDriver');
         $webDriver = $magentoWebDriver->webDriver;
-        $webDriver->executeScript($scriptInstall);
+        $webDriver->executeScript($scriptInstall, [$adminName]);
     }
 
     public function uninstallServiceWorker(): void
@@ -65,28 +75,33 @@ JS;
         $webDriver->executeScript($scriptUninstall);
     }
 
-    public function appendMixin(string $component, string $mixin): void
+    public function appendMixin(array $components): void
     {
-        $objectManager = ObjectManager::getInstance();
-        /** @var \Magento\Framework\Session\Storage $storageSession */
-        $storageSession = $objectManager->get('Boundsoff\PageBuilderLivePreview\Model\Session\Storage');
-        $requireMixins = $storageSession->getData('requireMixins') ?? [];
-        $requireMixins[$component][] = $mixin;
-        $storageSession->setData('requireMixins', $requireMixins);
+        [$component, $mixin] = $components;
+        static::$configMixin[$component][] = $mixin;
     }
 
-    public function finishServiceWorker()
+    public function finishServiceWorker(string $baseUrl, ?string $adminName = null)
     {
-        $scriptUninstall = <<<JS
-if (navigator?.serviceWorker?.controller) {
-    navigator.serviceWorker.controller.postMessage({ type: 'finish', payload: null });
-}
-JS;
-
         /** @var MagentoWebDriver $magentoWebDriver */
         /** @var FacebookWebDriver $webDriver */
         $magentoWebDriver = $this->getModule('\Magento\FunctionalTestingFramework\Module\MagentoWebDriver');
         $webDriver = $magentoWebDriver->webDriver;
-        $webDriver->executeScript($scriptUninstall);
+
+        $requestUrl = $baseUrl;
+        if ($adminName) {
+            $requestUrl .= "{$adminName}/";
+        }
+        $requestUrl .= "live-preview/worker/mixins/";
+
+        $scriptUninstall = <<<JS
+const [requestUrl, mixins] = arguments;
+
+require(['jquery'], function ($) {
+    $.post(requestUrl, { mixins });
+});
+JS;
+        $webDriver->executeScript($scriptUninstall, [$requestUrl, static::$configMixin]);
     }
+
 }

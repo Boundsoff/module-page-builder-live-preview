@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Suite/etc/suiteSchema.xsd">
+    <suite name="CspDisableSuite">
+        <before>
+            <magentoCLI command="module:disable Magento_Csp -f --clear-static-content" stepKey="disableCsp"/>
+            <magentoCLI command="setup:static-content:deploy -f" stepKey="deployStaticFiles" timeout="300"/>
+        </before>
+        <after>
+            <magentoCLI command="module:enable Magento_Csp -f --clear-static-content" stepKey="enableCsp"/>
+            <magentoCLI command="setup:static-content:deploy -f" stepKey="deployStaticFiles" timeout="300"/>
+        </after>
+        <include>
+            <group name="csp-disable"/>
+        </include>
+    </suite>
+</suites>

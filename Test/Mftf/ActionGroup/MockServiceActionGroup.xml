@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="MockServiceActionGroup">
+        <arguments>
+            <argument name="livePreview" defaultValue="MockMixins.livePreview"/>
+        </arguments>
+        <!-- Configure SW -->
+        <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper"
+                method="installServiceWorker"
+                stepKey="installServiceWorker"/>
+        <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper" method="appendMixin"
+                stepKey="registerLivePreviewMock">
+            <argument name="components">{{livePreview}}</argument>
+        </helper>
+        <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper"
+                method="finishServiceWorker"
+                stepKey="finishServiceWorker">
+            <argument name="baseUrl">{{_ENV.MAGENTO_BASE_URL}}</argument>
+            <argument name="adminName">{{_ENV.MAGENTO_BACKEND_NAME}}</argument>
+        </helper>
+    </actionGroup>
+</actionGroups>

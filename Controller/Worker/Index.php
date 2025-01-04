@@ -1,6 +1,6 @@
 <?php
 
-namespace Boundsoff\PageBuilderLivePreview\Controller\ServiceWorker;
+namespace Boundsoff\PageBuilderLivePreview\Controller\Worker;
 
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -8,6 +8,7 @@ use Magento\Framework\Controller\Result\Raw as ResultRaw;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Asset\Repository as AssetRepository;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -25,6 +26,7 @@ class Index implements HttpGetActionInterface
         protected readonly Filesystem $filesystem,
         protected readonly ResultFactory $resultFactory,
         protected readonly LoggerInterface $logger,
+        protected readonly UrlInterface $url,
     ) {
     }
 
@@ -41,15 +43,19 @@ class Index implements HttpGetActionInterface
         $resultRaw->setHeader('Content-Type', 'application/javascript');
 
         try {
-            $url = $this->assetRepository->createAsset('Boundsoff_PageBuilderLivePreview/js/require-mock-service.js')
+            $path = $this->assetRepository->createAsset('Boundsoff_PageBuilderLivePreview/js/require-mock-service.js')
                 ->getPath();
 
             $directoryStatic = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
-            if (!$directoryStatic->isExist($url)) {
-                throw new NotFoundException(__("File not found at: %1", $url));
+            if (!$directoryStatic->isExist($path)) {
+                throw new NotFoundException(__("File not found at: %1", $path));
             }
 
-            $resultRaw->setContents($directoryStatic->readFile($url));
+            $url = $this->url->getUrl('live_preview/worker/config');
+
+            $contents = $directoryStatic->readFile($path);
+            $contents .= "(new RequireMockService(self, '{$url}'));";
+            $resultRaw->setContents($contents);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
             $this->logger->debug($exception->getTraceAsString());

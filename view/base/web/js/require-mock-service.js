@@ -2,11 +2,14 @@ class RequireMockService {
     serviceWorker;
     finishInstall;
 
-    constructor(serviceWorker) {
+    constructor(serviceWorker, url) {
         this.serviceWorker = serviceWorker;
-        serviceWorker.addEventListener('install', this.onInstall);
-        serviceWorker.addEventListener('message', this.onMessage);
-        serviceWorker.addEventListener('fetch', this.onFetch);
+        this.url = url;
+
+        serviceWorker.addEventListener('install', this.onInstall.bind(this));
+        serviceWorker.addEventListener('activate', this.onActive.bind(this));
+        serviceWorker.addEventListener('message', this.onMessage.bind(this));
+        serviceWorker.addEventListener('fetch', this.onFetch.bind(this));
     }
 
     onMessage(event) {
@@ -22,9 +25,12 @@ class RequireMockService {
     }
 
     onInstall(event) {
-        event.waitUntil(new Promise(resolve => {
-            this.finishInstall = resolve;
-        }));
+        /** @check for it */
+        console.log('install');
+    }
+
+    onActive(event) {
+        console.log('activated');
     }
 
     /**
@@ -33,20 +39,18 @@ class RequireMockService {
      */
     onFetch(event) {
         if (!event.request.url.includes('requirejs-config.js')) {
-            fetch(event.request)
-                .then(event.respondWith);
+            event.respondWith(fetch(event.request));
             return;
         }
 
-        const formData = new FormData();
-        formData.set('requireJsConfigPath', event.request.url);
+        const url = new URL(event.request.url);
 
-        fetch('/live_preview/service-worker/require-js-config', {
-            method: 'POST',
-            data: formData,
-        })
-            .then(event.respondWith);
+        const requestUrl = new URL(this.url);
+        requestUrl.searchParams.set('file', url.pathname);
+        requestUrl.searchParams.set('isAjax', true);
+
+        event.respondWith(
+            fetch(requestUrl.toString())
+        );
     }
 }
-
-(new RequireMockService(self));

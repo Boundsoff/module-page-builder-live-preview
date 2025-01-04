@@ -2,7 +2,7 @@
 
 namespace Boundsoff\PageBuilderLivePreview\Router;
 
-use Boundsoff\PageBuilderLivePreview\Controller\ServiceWorker\Index;
+use Boundsoff\PageBuilderLivePreview\Controller\Worker\Index;
 use Magento\Framework\App\ActionFactory;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\RequestInterface;
