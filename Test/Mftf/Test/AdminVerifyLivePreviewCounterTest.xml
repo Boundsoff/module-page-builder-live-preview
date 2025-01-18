@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminVerifyLivePreviewCounterTest" extends="AdminVerifyLivePreviewDialogListTest">
+        <annotations>
+            <title value="Check for counter sessions"/>
+            <stories value="Live preview"/>
+            <description value="Verify counter modifications for active sessions."/>
+            <severity value="MAJOR"/>
+            <group value="pagebuilder"/>
+            <group value="pr_exclude"/>
+            <group value="cloud"/>
+        </annotations>
+        <!-- Verify viewport button and dialog -->
+        <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"/>
+
+        <!-- Verify counter at 'zero' -->
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(customStore.code, '0')}}"
+            stepKey="verifyStoreCountNode"/>
+        <clickWithLeftButton
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.code)}}"
+            stepKey="getForCustomStoreDetails"/>
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSession}}"
+                      stepKey="verifyCounterZero"/>
+        <assertEquals stepKey="assertCounterZero">
+            <actualResult type="variable">verifyCounterZero</actualResult>
+            <expectedResult type="string">0</expectedResult>
+        </assertEquals>
+
+        <!-- Verify increase count -->
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="increaseLink"/>
+        <openNewTab stepKey="increaseNewTab"/>
+        <amOnUrl url="{$increaseLink}" stepKey="increaseEnterPage"/>
+        <waitForPageLoad stepKey="increaseEnterPageWait"/>
+        <switchToPreviousTab stepKey="increaseBackAdmin"/>
+        <waitForElement selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSessionByCount('1')}}"
+                        stepKey="increaseVerify"/>
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.actionBack}}" stepKey="increaseBack"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(customStore.code, '1')}}"
+            stepKey="increaseListCounter"/>
+
+        <!-- Verify other double increase -->
+        <clickWithLeftButton
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(SecondStoreUnique.code)}}"
+            stepKey="otherIncreaseDetails"/>
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="increaseDoubleLink"/>
+        <switchToNextTab stepKey="increaseDoubleNewTabFirstNext"/>
+        <openNewTab stepKey="increaseDoubleNewTabFirst"/>
+        <amOnUrl url="{$increaseDoubleLink}" stepKey="increaseDoubleEnterTabFirst"/>
+        <waitForPageLoad stepKey="increaseDoubleEnterTabFirstWait"/>
+        <openNewTab stepKey="increaseDoubleNewTabSecond"/>
+        <amOnUrl url="{$increaseDoubleLink}" stepKey="increaseDoubleEnterTabSecond"/>
+        <waitForPageLoad stepKey="increaseDoubleEnterTabSecondWait"/>
+        <switchToNextTab stepKey="increaseDoubleAdmin"/>
+        <waitForElement selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSessionByCount('2')}}"
+                        stepKey="otherIncreaseVerify"/>
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.actionBack}}"
+                             stepKey="otherIncreaseBack"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(customStore.code, '1')}}"
+            stepKey="previousIncreaseCounter"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(SecondStoreUnique.code, '2')}}"
+            stepKey="otherIncreaseCounter"/>
+
+        <!-- Verify decrease -->
+        <switchToPreviousTab stepKey="switchSecondStoreUniqueLivePreviewTab"/>
+        <closeTab stepKey="closeSecondStoreUniqueLivePreviewTab"/>
+        <switchToNextTab stepKey="closeSecondStoreUniqueAdmin"/>
+        <pause stepKey="pauseDevelop"/>
+        <clickWithLeftButton
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(SecondStoreUnique.code)}}"
+            stepKey="getDecreaseDetails"/>
+        <waitForElement selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSessionByCount('1')}}"
+                        stepKey="decreaseVerify"/>
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.actionBack}}"
+                             stepKey="decreaseBack"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(customStore.code, '1')}}"
+            stepKey="decreasePreviousStore"/>
+        <seeElement
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeCountByCode(SecondStoreUnique.code, '1')}}"
+            stepKey="decreaseCurrentStore"/>
+
+        <!-- Remove all live previews -->
+        <switchToPreviousTab stepKey="switchToPreviousTab"/>
+        <closeTab stepKey="closeCurrentTab"/>
+        <closeTab stepKey="closePreviousTab"/>
+    </test>
+</tests>

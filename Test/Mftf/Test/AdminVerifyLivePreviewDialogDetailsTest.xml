@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="AdminVerifyLivePreviewDialogDetailsTest" extends="AdminVerifyLivePreviewStoresTest">
+    <test name="AdminVerifyLivePreviewDialogDetailsTest">
         <annotations>
             <title value="Check for store details"/>
             <stories value="Live preview"/>
@@ -11,16 +11,25 @@
             <group value="pr_exclude"/>
             <group value="cloud"/>
         </annotations>
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <!-- Navigate to page builder -->
+            <actionGroup ref="navigateToAPageWithPageBuilder" stepKey="navigateToAPageWithPageBuilder"/>
+            <actionGroup ref="switchToPageBuilderStage" stepKey="switchToPageBuilderStage"/>
+        </before>
+        <after>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutAsAdmin"/>
+        </after>
         <!-- Verify viewport button and dialog -->
         <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
                      before="clickForDetailsInformation"/>
         <!-- Display details information -->
         <clickWithLeftButton
-            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.name)}}"
+            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(_defaultStore.code)}}"
             stepKey="clickForDetailsInformation"/>
         <!-- Verify the elements -->
         <seeElement selector="{{PageBuilderLivePreviewDetailsSection.actionBack}}" stepKey="verifyBackElement"/>
-        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.titleStoreByName(customStore.name)}}"
+        <seeElement selector="{{PageBuilderLivePreviewDetailsSection.titleStoreByName(_defaultStore.name)}}"
                     stepKey="verifyStoreName"/>
         <seeElement selector="{{PageBuilderLivePreviewDetailsSection.counterStoreSession}}" stepKey="verifyCounter"/>
         <seeElement selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="verifyFormatedLinked"/>

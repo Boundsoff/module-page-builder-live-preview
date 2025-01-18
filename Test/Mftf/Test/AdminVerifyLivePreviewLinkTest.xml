@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="AdminVerifyLivePreviewLinkTest">
+    <test name="AdminVerifyLivePreviewLinkTest" extends="AdminVerifyLivePreviewDialogDetailsTest">
         <annotations>
             <title value="Check for link features"/>
             <stories value="Live preview"/>
@@ -11,23 +11,6 @@
             <group value="pr_exclude"/>
             <group value="cloud"/>
         </annotations>
-        <before>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
-            <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createStoreViewCustom"/>
-            <!-- Enter CMS -->
-            <actionGroup ref="navigateToAPageWithPageBuilder" stepKey="navigateToAPageWithPageBuilder"/>
-            <actionGroup ref="switchToPageBuilderStage" stepKey="switchToPageBuilderStage"/>
-        </before>
-        <after>
-            <actionGroup ref="AdminDeleteStoreViewActionGroup" stepKey="deleteStoreView"/>
-            <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutAsAdmin"/>
-        </after>
-        <!-- Display details information -->
-        <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
-                     before="clickForDetailsInformation"/>
-        <clickWithLeftButton
-            selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.name)}}"
-            stepKey="clickForDetailsInformation"/>
 
         <!-- Get formated link -->
         <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="formatedLink"/>

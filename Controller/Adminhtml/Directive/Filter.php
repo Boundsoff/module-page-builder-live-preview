@@ -24,7 +24,7 @@ class Filter implements HttpPostActionInterface
 
     public function execute()
     {
-        $content = $this->request->getParam('content');
+        $content = $this->request->getParam('content') ?? '';
         $storeCode = $this->request->getParam('storeCode');
         $store = $this->storeRepository->get($storeCode);
 
