@@ -12,21 +12,15 @@
             <group value="cloud"/>
         </annotations>
         <before>
-            <actionGroup ref="CspModuleDisableActionGroup" stepKey="disableCsp"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createStoreViewCustom"/>
-            <actionGroup ref="AdminMockServiceActionGroup" stepKey="settingUpMockService"/>
             <!-- Enter CMS -->
             <actionGroup ref="navigateToAPageWithPageBuilder" stepKey="navigateToAPageWithPageBuilder"/>
             <actionGroup ref="switchToPageBuilderStage" stepKey="switchToPageBuilderStage"/>
         </before>
         <after>
-            <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\RequireJsMockHelper"
-                    method="uninstallServiceWorker"
-                    stepKey="uninstallServiceWorker"/>
             <actionGroup ref="AdminDeleteStoreViewActionGroup" stepKey="deleteStoreView"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutAsAdmin"/>
-            <actionGroup ref="CspModuleEnableActionGroup" stepKey="enableCsp"/>
         </after>
         <!-- Display details information -->
         <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
@@ -34,6 +28,46 @@
         <clickWithLeftButton
             selector="{{PageBuilderLivePreviewDialogStoresSection.storeNodeByCode(customStore.name)}}"
             stepKey="clickForDetailsInformation"/>
-        <pause stepKey="pauseDevelopFinish"/>
+
+        <!-- Get formated link -->
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="formatedLink"/>
+
+        <!-- Verify QR Code -->
+        <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\QrCodeHelper" method="verifyText"
+                stepKey="verifyQrElement">
+            <argument name="cssSelector">{{PageBuilderLivePreviewDetailsSection.qrImg}}</argument>
+            <argument name="resultExpected">{$formatedLink}</argument>
+        </helper>
+
+        <!-- Verify open link -->
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.ctaOpen}}" stepKey="clickCtaOpen"/>
+        <switchToNextTab stepKey="switchToOpenTab"/>
+        <grabFromCurrentUrl stepKey="openedCtaLink"/>
+        <assertEquals stepKey="verifyCtaLink">
+            <actualResult type="variable">openedCtaLink</actualResult>
+            <expectedResult type="variable">formatedLink</expectedResult>
+        </assertEquals>
+        <closeTab stepKey="closeCtaOpen"/>
+
+        <!-- Verify copy link -->
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.ctaCopy}}" stepKey="clickCtaCopy"/>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragRowToRootContainer">
+            <argument name="contentType" value="PageBuilderRowContentType"/>
+            <argument name="containerTargetType" value="PageBuilderRootContainerContentType"/>
+        </actionGroup>
+        <actionGroup ref="expandPageBuilderPanelMenuSection" stepKey="expandPageBuilderPanelMenuSection">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragTextIntoStage">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <clickWithLeftButton x="10" y="10" selector="{{TextOnStage.tinymce('1')}}" stepKey="focusOnTextEditorArea"/>
+        <pressKey selector="{{TextOnStage.tinymce('1')}}"
+                  parameterArray="[\Facebook\WebDriver\WebDriverKeys::CONTROL, 'v']" stepKey="fillWysiwygField"/>
+        <actionGroup ref="unFocusOptionMenu" stepKey="unFocusEditor">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <waitForElementVisible selector="{{TextOnStage.text('1', 'live-preview/index/index/peer-id')}}"
+                               stepKey="waitForTextOnStage"/>
     </test>
 </tests>

@@ -3,7 +3,7 @@ import LivePreview from "Boundsoff_PageBuilderLivePreview/js/viewport/live-previ
 export default function (base: typeof LivePreview) {
     return class PageBuilderMixin extends base {
         public get previewLink(): string {
-            return `https://google.com/`; // @todo replace to website
+            return `https://www.google.com/`;
         }
     }
 }

@@ -7,6 +7,9 @@
         "magento/framework": "*",
         "magento/module-page-builder": "2.2.*"
     },
+    "require-dev": {
+        "chillerlan/php-qrcode": "^5.0"
+    },
     "autoload": {
         "files": [
             "registration.php"

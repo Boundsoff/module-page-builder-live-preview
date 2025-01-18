@@ -18,7 +18,7 @@ define([], function () {
       return _createClass(PageBuilderMixin, [{
         key: "previewLink",
         get: function get() {
-          return "https://google.com/"; // @todo replace to website
+          return "https://www.google.com/";
         }
       }]);
     }(base);

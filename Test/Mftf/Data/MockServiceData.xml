@@ -7,4 +7,7 @@
             <item>Boundsoff_PageBuilderLivePreview/js/viewport/live-preview-mock</item>
         </array>
     </entity>
+    <entity name="MockLivePreview">
+        <data key="formatedLink">https://www.google.com/</data>
+    </entity>
 </entities>
