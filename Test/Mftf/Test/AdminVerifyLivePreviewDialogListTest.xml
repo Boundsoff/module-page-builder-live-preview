@@ -7,6 +7,9 @@
             <stories value="Live preview"/>
             <description value="Checking information in store view."/>
             <severity value="MAJOR"/>
+            <group value="pagebuilder"/>
+            <group value="pr_exclude"/>
+            <group value="cloud"/>
         </annotations>
         <!-- Verify viewport button and dialog -->
         <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"

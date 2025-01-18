@@ -9,8 +9,6 @@
             <features value="PageBuilder"/>
             <stories value="Live preview"/>
             <severity value="MAJOR"/>
-            <group value="boudnsoff"/>
-            <group value="boudnsoff-live-preview"/>
             <group value="pagebuilder"/>
             <group value="pr_exclude"/>
             <group value="cloud"/>

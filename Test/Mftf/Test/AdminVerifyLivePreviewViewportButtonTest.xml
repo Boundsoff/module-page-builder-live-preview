@@ -8,8 +8,6 @@
             <title value="Look for the button aside for viewport"/>
             <description value="Checks for button for live preview and it's content after click."/>
             <severity value="MAJOR"/>
-            <group value="boudnsoff"/>
-            <group value="boudnsoff-live-preview"/>
             <group value="pagebuilder"/>
             <group value="pr_exclude"/>
             <group value="cloud"/>

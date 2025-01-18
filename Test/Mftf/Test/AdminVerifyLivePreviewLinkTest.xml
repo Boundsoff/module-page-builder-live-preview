@@ -7,12 +7,15 @@
             <stories value="Live preview"/>
             <description value="Checking for qr code, link element, copy button and anchor."/>
             <severity value="MAJOR"/>
-            <group value="csp-disable"/>
+            <group value="pagebuilder"/>
+            <group value="pr_exclude"/>
+            <group value="cloud"/>
         </annotations>
         <before>
+            <actionGroup ref="CspModuleDisableActionGroup" stepKey="disableCsp"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createStoreViewCustom"/>
-            <actionGroup ref="MockServiceActionGroup" stepKey="settingUpMockService"/>
+            <actionGroup ref="AdminMockServiceActionGroup" stepKey="settingUpMockService"/>
             <!-- Enter CMS -->
             <actionGroup ref="navigateToAPageWithPageBuilder" stepKey="navigateToAPageWithPageBuilder"/>
             <actionGroup ref="switchToPageBuilderStage" stepKey="switchToPageBuilderStage"/>
@@ -22,8 +25,9 @@
                     method="uninstallServiceWorker"
                     stepKey="uninstallServiceWorker"/>
             <actionGroup ref="AdminDeleteStoreViewActionGroup" stepKey="deleteStoreView"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutAsAdmin"/>
+            <actionGroup ref="CspModuleEnableActionGroup" stepKey="enableCsp"/>
         </after>
-        <pause stepKey="pauseDevelop"/>
         <!-- Display details information -->
         <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"
                      before="clickForDetailsInformation"/>
