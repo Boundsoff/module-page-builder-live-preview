@@ -1,4 +1,5 @@
 <?php
+/** @use \Boundsoff\PageBuilderLivePreview\Plugin\StageConfig::afterGetConfig */
 
 use Magento\Framework\Component\ComponentRegistrar;
 

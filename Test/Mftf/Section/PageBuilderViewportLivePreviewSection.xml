@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="PageBuilderViewportLivePreviewSection">
+        <element name="dialogLivePreview" type="block"
+                 selector=".pagebuilder-stage-wrapper .viewport-buttons dialog.live-preview"/>
+        <element name="viewportButton" type="button"
+                 selector=".pagebuilder-stage-wrapper .viewport-buttons dialog.live-preview + .tooltip .page-builder-viewport"/>
+    </section>
+</sections>

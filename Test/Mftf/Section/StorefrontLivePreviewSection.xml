@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontLivePreviewSection">
+        <element name="previewContentChildren" type="block" selector="#live-preview > div > div > *"/>
+        <element name="headingElement" type="block" parameterized="true"
+                 selector="//h2[@data-content-type='heading'][contains(text(), '{{content}}')]"/>
+        <element name="productsByContain" type="block" parameterized="true"
+                 selector="//*[@data-content-type='products'][contains(text(), '{{content}}')]"/>
+        <element name="scriptMagentoMageInit" type="block"
+                 selector="#live-preview script[type='text/x-magento-init']"/>
+    </section>
+</sections>

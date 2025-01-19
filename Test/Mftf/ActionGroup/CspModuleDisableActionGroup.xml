@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="CspModuleDisableActionGroup">
+        <magentoCLI command="module:disable Magento_Csp -f --clear-static-content" stepKey="disableCsp"/>
+        <magentoCLI command="setup:di:compile" stepKey="compileDiFiles"/>
+        <magentoCLI command="setup:static-content:deploy -f -j 4" stepKey="deployStaticFiles"/>
+    </actionGroup>
+</actionGroups>

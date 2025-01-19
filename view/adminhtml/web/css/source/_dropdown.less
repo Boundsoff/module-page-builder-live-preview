@@ -9,6 +9,8 @@ dialog.live-preview {
     z-index: @modal__z-index;
     text-align: left !important;
     border-radius: @indent__xs;
+    max-height: 80vh;
+    overflow: auto;
 
     &[open] + .tooltip {
         position: relative;

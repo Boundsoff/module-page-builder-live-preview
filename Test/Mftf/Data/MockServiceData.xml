@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="MockMixins" type="mock_live_preview_link">
+        <array key="livePreview">
+            <item>Boundsoff_PageBuilderLivePreview/js/viewport/live-preview</item>
+            <item>Boundsoff_PageBuilderLivePreview/js/viewport/live-preview-mock</item>
+        </array>
+    </entity>
+    <entity name="MockLivePreview">
+        <data key="formatedLink">https://www.google.com/</data>
+    </entity>
+</entities>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="PageBuilderLivePreviewDialogStoresSection">
+        <element name="storeViews" type="block"
+                 selector=".pagebuilder-stage-wrapper .viewport-buttons dialog.live-preview .store-views"/>
+        <element name="websiteNodeByName" type="block"
+                 selector="//*[@class='store-views']/ol/li/label[contains(text(), '{{websiteName}}')]"
+                 parameterized="true"/>
+        <element name="groupNodeByName" type="block"
+                 selector="//*[@class='store-views']/ol/li/ol/li/label[contains(text(), '{{groupName}}')]"
+                 parameterized="true"/>
+        <element name="storeNodeByCode" type="block"
+                 selector="//*[@class='store-views']/ol/li/ol/li/ol/li/a[@data-code='{{storeCode}}']"
+                 parameterized="true"/>
+        <element name="storeCountByCode" type="block"
+                 selector="//*[@class='store-views']/ol/li/ol/li/ol/li/a[@data-code='{{storeCode}}']/*[@class='counter'][contains(text(), '{{count}}')]"
+                 parameterized="true"/>
+    </section>
+</sections>

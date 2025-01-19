@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminVerifyLivePreviewLinkTest" extends="AdminVerifyLivePreviewDialogDetailsTest">
+        <annotations>
+            <title value="Check for link features"/>
+            <stories value="Live preview"/>
+            <description value="Checking for qr code, link element, copy button and anchor."/>
+            <severity value="MAJOR"/>
+            <group value="pagebuilder"/>
+            <group value="pr_exclude"/>
+            <group value="cloud"/>
+            <group value="boundsoff_live-preview"/>
+        </annotations>
+
+        <!-- Get formated link -->
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="formatedLink"/>
+
+        <!-- Verify QR Code -->
+        <helper class="\Boundsoff\PageBuilderLivePreview\Test\Mftf\Helper\QrCodeHelper" method="verifyText"
+                stepKey="verifyQrElement">
+            <argument name="cssSelector">{{PageBuilderLivePreviewDetailsSection.qrImg}}</argument>
+            <argument name="resultExpected">{$formatedLink}</argument>
+        </helper>
+
+        <!-- Verify open link -->
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.ctaOpen}}" stepKey="clickCtaOpen"/>
+        <switchToNextTab stepKey="switchToOpenTab"/>
+        <grabFromCurrentUrl stepKey="openedCtaLink"/>
+        <assertEquals stepKey="verifyCtaLink">
+            <actualResult type="variable">openedCtaLink</actualResult>
+            <expectedResult type="variable">formatedLink</expectedResult>
+        </assertEquals>
+        <closeTab stepKey="closeCtaOpen"/>
+
+        <!-- Verify copy link -->
+        <clickWithLeftButton selector="{{PageBuilderLivePreviewDetailsSection.ctaCopy}}" stepKey="clickCtaCopy"/>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragRowToRootContainer">
+            <argument name="contentType" value="PageBuilderRowContentType"/>
+            <argument name="containerTargetType" value="PageBuilderRootContainerContentType"/>
+        </actionGroup>
+        <actionGroup ref="expandPageBuilderPanelMenuSection" stepKey="expandPageBuilderPanelMenuSection">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragTextIntoStage">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <clickWithLeftButton x="10" y="10" selector="{{TextOnStage.tinymce('1')}}" stepKey="focusOnTextEditorArea"/>
+        <pressKey selector="{{TextOnStage.tinymce('1')}}"
+                  parameterArray="[\Facebook\WebDriver\WebDriverKeys::CONTROL, 'v']" stepKey="fillWysiwygField"/>
+        <actionGroup ref="unFocusOptionMenu" stepKey="unFocusEditor">
+            <argument name="contentType" value="PageBuilderTextContentType"/>
+        </actionGroup>
+        <waitForElementVisible selector="{{TextOnStage.text('1', 'live-preview/index/index/peer-id')}}"
+                               stepKey="waitForTextOnStage"/>
+    </test>
+</tests>
