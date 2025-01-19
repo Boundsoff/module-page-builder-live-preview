@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminVerifyLivePreviewEditorUpdateTest" extends="AdminVerifyLivePreviewDialogDetailsTest">
+        <annotations>
+            <title value="Verify update the content"/>
+            <stories value="Live preview"/>
+            <description value="Verify update content with simple and products with widgets and knockout bind."/>
+            <severity value="MAJOR"/>
+            <group value="pagebuilder"/>
+            <group value="pr_exclude"/>
+            <group value="cloud"/>
+            <group value="boundsoff_live-preview"/>
+        </annotations>
+        <before>
+            <createData entity="PageBuilderProductsSubCategory" stepKey="createPreReqCategory"
+                        before="navigateToAPageWithPageBuilder"/>
+            <createData entity="_defaultProduct" stepKey="createPreReqProduct1" before="navigateToAPageWithPageBuilder">
+                <requiredEntity createDataKey="createPreReqCategory"/>
+            </createData>
+            <createData entity="_defaultProduct" stepKey="createPreReqProduct2" before="navigateToAPageWithPageBuilder">
+                <requiredEntity createDataKey="createPreReqCategory"/>
+            </createData>
+        </before>
+        <after>
+            <deleteData createDataKey="createPreReqProduct1" stepKey="deletePreReqProduct1"/>
+            <deleteData createDataKey="createPreReqProduct2" stepKey="deletePreReqProduct2"/>
+            <deleteData createDataKey="createPreReqCategory" stepKey="deletePreReqCategory"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutAsAdmin" after="deletePreReqCategory"/>
+        </after>
+
+        <grabTextFrom selector="{{PageBuilderLivePreviewDetailsSection.formatedLink}}" stepKey="formatedLinked"/>
+        <openNewTab stepKey="openTabEditor"/>
+        <amOnUrl url="{$formatedLinked}" stepKey="goToTheLink"/>
+        <waitForPageLoad stepKey="waitToPageLoad"/>
+
+        <!-- Verify clean page -->
+        <dontSeeElement selector="{{StorefrontLivePreviewSection.previewContentChildren}}" stepKey="emptyElements"/>
+
+        <!-- Update content with simple heading element -->
+        <switchToPreviousTab stepKey="switchBackEditor"/>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragRowToRootContainer">
+            <argument name="contentType" value="PageBuilderRowContentType"/>
+            <argument name="containerTargetType" value="PageBuilderRootContainerContentType"/>
+        </actionGroup>
+        <actionGroup ref="expandPageBuilderPanelMenuSection" stepKey="expandPageBuilderPanelMenuSection">
+            <argument name="contentType" value="PageBuilderHeadingContentType"/>
+        </actionGroup>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragHeadingIntoStage">
+            <argument name="contentType" value="PageBuilderHeadingContentType"/>
+        </actionGroup>
+        <actionGroup ref="clickOutsideLiveEditHeading" stepKey="clickOutsideLiveEditHeading">
+            <argument name="index" value="1"/>
+        </actionGroup>
+        <actionGroup ref="openPageBuilderEditPanel" stepKey="openEditMenuOnStage">
+            <argument name="contentType" value="PageBuilderHeadingContentType"/>
+        </actionGroup>
+        <actionGroup ref="fillSlideOutPanelFieldGeneral" stepKey="enterHeadingTextProperty">
+            <argument name="property" value="PageBuilderHeadingTextProperty"/>
+        </actionGroup>
+        <actionGroup ref="saveEditPanelSettings" stepKey="saveEditPanelSettingsHeading"/>
+        <switchToNextTab stepKey="switchToRenderer"/>
+        <waitForElement selector="{{StorefrontLivePreviewSection.headingElement(PageBuilderHeadingTextProperty.value)}}"
+                        stepKey="verifyHeadingContent"/>
+        <switchToPreviousTab stepKey="switchBackVerifyUpdate"/>
+        <actionGroup ref="openPageBuilderEditPanel" stepKey="openEditMenuOnStageUpdate">
+            <argument name="contentType" value="PageBuilderHeadingContentType"/>
+        </actionGroup>
+        <actionGroup ref="fillSlideOutPanelFieldGeneral" stepKey="enterHeadingTextPropertyUpdate">
+            <argument name="property" value="PageBuilderHeadingText_Description"/>
+        </actionGroup>
+        <actionGroup ref="saveEditPanelSettings" stepKey="saveEditPanelSettingsUpdate"/>
+        <switchToNextTab stepKey="switchToRendererUpdate"/>
+        <waitForElement
+            selector="{{StorefrontLivePreviewSection.headingElement(PageBuilderHeadingText_Description.value)}}"
+            stepKey="verifyHeadingContentUpdate"/>
+
+        <!-- Verify products with widget directive and knockout binding -->
+        <switchToPreviousTab stepKey="switchBackEditorProducts"/>
+        <actionGroup ref="expandPageBuilderPanelMenuSection" stepKey="expandMenuSectionAddContent">
+            <argument name="contentType" value="PageBuilderProductsContentType"/>
+        </actionGroup>
+        <actionGroup ref="dragContentTypeToStage" stepKey="dragProductsIntoStage">
+            <argument name="contentType" value="PageBuilderProductsContentType"/>
+        </actionGroup>
+        <actionGroup ref="openPageBuilderEditPanel" stepKey="openEditAfterDrop">
+            <argument name="contentType" value="PageBuilderProductsContentType"/>
+        </actionGroup>
+        <actionGroup ref="chooseVisualSelectOption" stepKey="chooseSelectProductsBy">
+            <argument name="property" value="PageBuilderProductsSelectProductsByCondition"/>
+        </actionGroup>
+        <actionGroup ref="addConditionToProductConditions" stepKey="addCategory">
+            <argument name="conditionInput" value="$$createPreReqCategory.id$$"/>
+        </actionGroup>
+        <actionGroup ref="saveEditPanelSettings" stepKey="saveEditPanelSettingsProducts"/>
+        <switchToNextTab stepKey="switchToRendererProducts"/>
+        <waitForElementNotVisible
+            selector="{{StorefrontLivePreviewSection.productsByContain(StorefrontLivePreview.widgetDirective)}}"
+            stepKey="verifyWidgetDirectiveRender"/>
+        <waitForElementNotVisible selector="{{StorefrontLivePreviewSection.scriptMagentoMageInit}}"
+                                  stepKey="verifyMageInitFinished"/>
+    </test>
+</tests>

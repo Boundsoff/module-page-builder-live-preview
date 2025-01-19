@@ -10,6 +10,7 @@
             <group value="pagebuilder"/>
             <group value="pr_exclude"/>
             <group value="cloud"/>
+            <group value="boundsoff_live-preview"/>
         </annotations>
 
         <!-- Get formated link -->

@@ -10,6 +10,7 @@
             <group value="pagebuilder"/>
             <group value="pr_exclude"/>
             <group value="cloud"/>
+            <group value="boundsoff_live-preview"/>
         </annotations>
         <!-- Verify viewport button and dialog -->
         <actionGroup ref="DialogLivePreviewActionGroup" stepKey="verifyLivePreviewButton"/>
