@@ -1,0 +1,73 @@
+End User License Agreement (EULA)
+
+Effective Date: 28-01-20245
+
+This End User License Agreement ("Agreement") is a formal contract between you ("Licensee") and Boundsoff ("Licensor") regarding the use of the PageBuilderLivePreview ("Software"). By downloading, installing, or using the Software, you agree to the terms outlined in this Agreement.
+
+1. Grant of License
+
+    1.1 Licensor provides Licensee with a non-exclusive, non-transferable, and revocable license to use the Software on one Magento installation.
+
+    1.2 This license prohibits redistribution, resale, or sublicensing of the Software in any form.
+
+2. Restrictions
+
+    2.1 Licensee agrees to the following restrictions:
+
+        Do not copy, modify, or create derivative works of the Software unless explicitly permitted by Licensor.
+
+        Do not distribute, sublicense, or transfer the Software to third parties.
+
+        Do not reverse engineer, decompile, or disassemble the Software unless allowed by applicable law.
+
+    2.2 Licensee must ensure that the Software is only used on one Magento installation. For additional installations, additional licenses must be purchased.
+
+3. Ownership
+
+    3.1 The Software, along with any updates, modifications, or enhancements, is the intellectual property of Licensor and is protected by copyright laws and related regulations.
+
+    3.2 This Agreement does not grant Licensee any ownership rights to the Software.
+
+4. Support and Updates
+
+    4.1 Licensor may choose to provide updates or technical support for the Software. Updates may be subject to additional terms.
+
+    4.2 Licensee is required to use the latest version of the Software to qualify for support services.
+
+5. Termination
+
+    5.1 This Agreement remains in effect until terminated. Licensor may terminate this Agreement immediately if Licensee violates any terms.
+
+    5.2 Upon termination, Licensee must discontinue use of the Software and delete all copies in their possession.
+
+6. Disclaimer of Warranties
+
+        6.1 The Software is provided "as is" without any guarantees, including but not limited to implied warranties of merchantability, fitness for a specific purpose, or non-infringement.
+
+        6.2 Licensor does not warrant that the Software will be free of errors or operate without interruptions.
+
+7. Limitation of Liability
+
+    7.1 To the extent allowed by law, Licensor shall not be held liable for any indirect, incidental, special, or consequential damages resulting from the use or inability to use the Software, even if Licensor has been informed of potential damages.
+
+    7.2 Licensor’s total liability under this Agreement shall not exceed the total amount Licensee paid for the Software.
+
+8. Governing Law
+
+    8.1 This Agreement is governed by the laws of Poland.
+
+    8.2 Any disputes related to this Agreement will be handled exclusively by the courts in Poland.
+
+9. Entire Agreement
+
+    9.1 This Agreement represents the full understanding between the parties regarding the Software and replaces any prior agreements.
+
+    9.2 Amendments to this Agreement must be in writing and signed by both parties.
+
+10. Contact Information
+
+If you have questions or concerns about this Agreement, please contact:
+
+Boundsoff
+Email: office@boundsoff.com
+Website: https://boundsoff.com
