@@ -1,6 +1,7 @@
 <?php
 /** @var \Magento\Framework\View\Element\Template $block */
 /** @var \Boundsoff\PageBuilderLivePreview\ViewModel\LivePreviewDefault $viewModel */
+/** @var \Magento\Framework\Escaper $escaper */
 $viewModel = $block->getViewModel();
 $jsLayout = [
     '#live-preview' => [
@@ -22,4 +23,4 @@ $jsLayout = [
 <div id="live-preview" data-bind="scope: 'renderer'">
     <!-- ko template: getTemplate() --><!-- /ko -->
 </div>
-<script type="text/x-magento-init"><?= $viewModel->getSerializer()->serialize($jsLayout) ?></script>
+<script type="text/x-magento-init"><?= $escaper->escapeJs($viewModel->getSerializer()->serialize($jsLayout)) ?></script>

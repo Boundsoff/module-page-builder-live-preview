@@ -5,15 +5,4 @@
         <plugin name="bf_live_preview-stage_config"
                 type="Boundsoff\PageBuilderLivePreview\Plugin\StageConfig"/>
     </type>
-    <type name="Magento\Framework\App\RouterList">
-        <arguments>
-            <argument name="routerList" xsi:type="array">
-                <item name="serviceWorkerMock" xsi:type="array">
-                    <item name="class" xsi:type="string">Boundsoff\PageBuilderLivePreview\Router\ServiceWorkerMockRouter</item>
-                    <item name="disable" xsi:type="boolean">false</item>
-                    <item name="sortOrder" xsi:type="number">90</item>
-                </item>
-            </argument>
-        </arguments>
-    </type>
 </config>

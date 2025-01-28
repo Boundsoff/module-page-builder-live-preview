@@ -11,7 +11,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class LivePreviewDefault implements ArgumentInterface
 {
-    const PARAM_PEER_ID = 'peer-id';
+    public const PARAM_PEER_ID = 'peer-id';
 
     /**
      * @param RequestInterface $request
@@ -22,18 +22,35 @@ class LivePreviewDefault implements ArgumentInterface
         protected readonly RequestInterface $request,
         protected readonly SerializerInterface $serializer,
         protected readonly StoreManagerInterface $storeManager,
-    ) { }
+    ) {
+    }
 
+    /**
+     * Get the peerId from the request
+     *
+     * @return string
+     */
     public function getParamPeerId(): string
     {
         return (string)$this->request->getParam(static::PARAM_PEER_ID);
     }
 
+    /**
+     * Getting the serializer for json
+     *
+     * @return SerializerInterface
+     */
     public function getSerializer(): SerializerInterface
     {
         return $this->serializer;
     }
 
+    /**
+     * Getting the storeCode for current storeView
+     *
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getStoreCode(): string
     {
         return $this->storeManager->getStore()->getCode();

@@ -10,6 +10,9 @@ use Magento\Framework\Exception\NotFoundException;
 
 class Index implements HttpGetActionInterface
 {
+    /**
+     * @param ResultFactory $resultFactory
+     */
     public function __construct(protected readonly ResultFactory $resultFactory)
     {
     }

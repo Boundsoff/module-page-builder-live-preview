@@ -12,16 +12,28 @@ use Magento\Store\Model\StoreRepository;
 
 class Filter implements HttpPostActionInterface
 {
+    /**
+     * @param FilterProvider $filterProvider
+     * @param ResultFactory $resultFactory
+     * @param RequestInterface $request
+     * @param Emulation $emulation
+     * @param StoreRepository $storeRepository
+     */
     public function __construct(
         protected readonly FilterProvider   $filterProvider,
         protected readonly ResultFactory    $resultFactory,
         protected readonly RequestInterface $request,
         protected readonly Emulation        $emulation,
         protected readonly StoreRepository  $storeRepository,
-    )
-    {
+    ) {
     }
 
+    /**
+     * Filter widget from the admin for the given store view
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute()
     {
         $content = $this->request->getParam('content') ?? '';

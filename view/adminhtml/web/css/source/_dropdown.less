@@ -1,16 +1,16 @@
 dialog.live-preview {
-    color: @blp__dialog-color;
     background: @blp__dialog-background;
-    padding: @indent__m 0;
     border: none;
-    margin-top: @indent__s;
-    min-width: 400px;
-    max-width: 600px;
-    z-index: @modal__z-index;
-    text-align: left !important;
     border-radius: @indent__xs;
+    color: @blp__dialog-color;
+    margin-top: @indent__s;
     max-height: 80vh;
+    max-width: 600px;
+    min-width: 400px;
     overflow: auto;
+    padding: @indent__m 0;
+    text-align: left !important;
+    z-index: @modal__z-index;
 
     &[open] + .tooltip {
         position: relative;
@@ -19,14 +19,14 @@ dialog.live-preview {
             border-bottom: 5px solid @blp__dialog-background;
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
+            bottom: @indent__s *-1;
             content: '';
             height: 0;
+            left: 50%;
             opacity: .8;
             position: absolute;
-            bottom: @indent__s * -1;
-            width: 0;
             transform: translateX(-50%);
-            left: 50%;
+            width: 0;
         }
     }
 
@@ -44,22 +44,23 @@ dialog.live-preview {
     }
 
     .counter {
-        color: @blp__dialog-background;
         background: @blp__dialog-color;
-        padding: @indent__xs;
-        width: @font-size__l;
-        height: @font-size__l;
-        font-size: @font-size__l;
-        line-height: 1;
         border-radius: 100%;
         box-sizing: content-box;
+        color: @blp__dialog-background;
+        font-size: @font-size__l;
+        height: @font-size__l;
+        line-height: 1;
+        padding: @indent__xs;
         text-align: center;
+        width: @font-size__l;
     }
 
-    ul, ol {
+    ul,
+    ol {
         list-style: none;
-        padding: 0;
         margin: 0;
+        padding: 0;
     }
 
     .store-views {
@@ -69,22 +70,23 @@ dialog.live-preview {
         }
 
         > ol {
-            margin: 0 (@indent__m * -1);
+            margin: 0 (@indent__m *-1);
         }
 
         li {
-            label, a {
+            label,
+            a {
                 background: @blp__dialog-background-item;
                 display: block;
-                width: 100%;
                 height: 100%;
-                padding: @indent__m;
-                padding-left: ~"calc(@{indent__m} * var(--depth, 1))";
                 margin: @border-width 0;
+                padding: @indent__m;
+                padding-left: ~ 'calc(@{indent__m} * var(--depth, 1))';
+                width: 100%;
             }
 
             label {
-                opacity: 0.7;
+                opacity: .7;
             }
 
             a {
@@ -112,11 +114,11 @@ dialog.live-preview {
         }
 
         pre {
-            padding: @indent__s;
-            margin: @indent__s 0;
             background: @blp__dialog-background-item;
             border: 1px solid @blp__dialog-background-item-hover;
             border-radius: @indent__s;
+            margin: @indent__s 0;
+            padding: @indent__s;
         }
 
         img {
@@ -124,17 +126,17 @@ dialog.live-preview {
         }
 
         ol {
-            display: flex;
-            flex-flow: row nowrap;
             align-items: stretch;
             column-gap: @indent__s;
+            display: flex;
+            flex-flow: row nowrap;
 
             li {
                 flex-basis: 50%;
 
                 * {
-                    width: 100%;
                     height: 100%;
+                    width: 100%;
                 }
             }
         }
