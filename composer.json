@@ -3,6 +3,7 @@
     "version": "0.9.0",
     "description": "N/A",
     "type": "magento2-module",
+    "license": "EULA",
     "require": {
         "magento/framework": "*",
         "magento/module-page-builder": "2.2.*"
