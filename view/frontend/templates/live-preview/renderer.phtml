@@ -23,4 +23,4 @@ $jsLayout = [
 <div id="live-preview" data-bind="scope: 'renderer'">
     <!-- ko template: getTemplate() --><!-- /ko -->
 </div>
-<script type="text/x-magento-init"><?= $escaper->escapeJs($viewModel->getSerializer()->serialize($jsLayout)) ?></script>
+<script type="text/x-magento-init"><?= /* @noEscape */ $viewModel->getSerializer()->serialize($jsLayout) ?></script>
