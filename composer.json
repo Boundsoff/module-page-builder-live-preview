@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Storefront viewer as new tab on browser which is updated on every changed in the page builder.",
     "type": "magento2-module",
-    "license": "EULA",
+    "license": "MIT",
     "require": {
         "magento/module-page-builder": "^2.2.5"
     },
